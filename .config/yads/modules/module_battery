@@ -1,0 +1,13 @@
+#!/bin/sh
+
+# get battery
+battery="/sys/class/power_supply/BAT0"
+cap=$(cat "${battery}"/capacity)
+stat=$(sed "s/Discharging/🔋/;s/Not charging/🛑/;s/Charging/🔌/;s/Unknown/♻️/;s/Full/⚡/" "$battery"/status)
+
+# make warn
+[ "$cap" -le 25 ] && [ "$status" = "🔋" ] && warn="❗"
+
+# create output
+printf "[ %s%s%s%% ]" "$stat" "$warn" "$cap"
+unset warn

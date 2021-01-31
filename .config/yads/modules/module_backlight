@@ -1,0 +1,7 @@
+#!/bin/sh
+
+# get brightness
+brightlevel=$(brightnessctl | grep Current | sed 's/^.*(//;s/)//')
+
+# create output
+echo [ 💡 ${brightlevel} ]

@@ -1,0 +1,10 @@
+#!/bin/sh
+
+# get information
+title=$(mpc current)
+state=$(mpc | sed "/^volume:/d;1d;s/\\[playing\\].*/▶/;s/\\[paused\\].*/⏸/")
+duration=$(mpc | sed "1d;3d" | awk '{print $3}')
+album=$(mpc -f %album% | sed "2d;3d")
+
+# create output
+[ ! "$(mpc current)" = "" ] && echo "$state $title [$album] ($duration)"

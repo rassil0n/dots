@@ -1,0 +1,390 @@
+# PROJECT:	neosnippets
+# FILE:		tex.snip
+# AUTHOR:   rassil0n
+# MAIL:		rassil0n@protonmail.com
+# GIT:		https://github.com/rassil0n
+
+#{{{ META
+snippet \newpage
+abbr    Create a new page
+alias   np
+options head
+        \newpage
+        ${1}
+
+snippet bigskip
+abbr    Create a bigskip
+alias   bs
+options head
+        \bigskip
+
+snippet tableofcontents
+abbr    Create table of contents
+alias   toc
+options head
+        \tableofcontents
+
+snippet listoffigures
+abbr    Create list of figures
+alias   lof
+options head
+        \listoffigures
+#}}}
+#{{{ STRUCTURE
+snippet \part
+alias   part
+options head
+        \part{${1:PART}}
+        \label{part:$1}}
+        ${0}
+
+snippet \section
+abbr    Create a Section
+alias   sec
+options head
+        \section{${1:SECTION}}
+        \label{sec:$1}
+        ${0}
+
+snippet \subsection
+abbr    Create a SubSection
+alias   ssec
+options head
+        \subsection{${1:SUBSECTION}}
+        \label{ssec:$1}
+        ${0}
+
+snippet \subsubsection
+abbr    Create a SubSubSection
+alias   sssec
+options head
+        \subsection{${1:SUBSUBSECTION}}
+        \label{sssec:$1}
+        ${0}
+
+#}}}
+#{{{ LISTS
+
+snippet \itemize
+abbr    Create a bulleted list
+alias   item
+options head
+        \begin{itemize}
+                \item ${1}
+        \end{itemize}
+
+snippet \enumerate
+abbr    Create a orderd list
+alias   enum
+options head
+        \begin{enumerate}
+                \item ${1}
+        \end{enumerate}
+
+snippet \description
+abbr    Create a Description
+alias   desc
+options head
+        \begin{description}
+                \item[${1}] ${0}
+        \end{description}
+
+snippet i
+abbr    Add a item to a list
+options head
+        \item ${1}
+#}}}
+#{{{ FONT
+snippet bfseries
+alias   \bfseries
+	\begin{bfseries}
+		${1:TARGET}
+	\end{bfseries}
+
+snippet mdseries
+alias   \mdseries
+	\begin{mdseries}
+		${1:TARGET}
+	\end{mdseries}
+
+snippet ttfamily
+alias   \ttfamily
+	\begin{ttfamily}
+		${1:TARGET}
+	\end{ttfamily}
+
+snippet sffamily
+alias   \sffamily
+	\begin{sffamily}
+		${1:TARGET}
+	\end{sffamily}
+
+snippet rmfamily
+alias   \rmfamily
+	\begin{rmfamily}
+		${1:TARGET}
+	\end{rmfamily}
+
+snippet upshape
+alias   \upshape
+	\begin{upshape}
+		${1:TARGET}
+	\end{upshape}
+
+snippet slshape
+alias   \slshape
+	\begin{slshape}
+		${1:TARGET}
+	\end{slshape}
+
+snippet scshape
+alias   \scshape
+	\begin{scshape}
+		${1:TARGET}
+	\end{scshape}
+
+snippet itshape
+alias   \itshape
+	\begin{itshape}
+		${1:TARGET}
+	\end{itshape}
+
+snippet \textbf
+alias   bf textbf
+	\textbf{${1:TARGET}}${0}
+
+snippet \textmd
+alias   textmd \textmd{
+	\textmd{${1:TARGET}}${0}
+
+snippet \texttt
+alias   tt texttt \texttt{
+	\texttt{${1:TARGET}}${0}
+
+snippet \textsf
+alias   textsf \textsf{
+	\textsf{${1:TARGET}}${0}
+
+snippet \textrm
+alias   textrm \textrm{
+	\textrm{${1:TARGET}}${0}
+
+snippet \textup
+alias   textup \textup{
+	\textup{${1:TARGET}}${0}
+
+snippet \textsl
+alias   textsl \textsl{
+	\textsl{${1:TARGET}}${0}
+
+snippet \textsc
+alias   sc textsc \textsc{
+	\textsc{${1:TARGET}}${0}
+
+snippet \textit
+alias   it textit \textit{
+	\textit{${1:TARGET}}${0}
+
+snippet lstinline
+abbr    insert code in line
+alias   code
+options word
+    \lstinline[language=${1}]{${2:inline code}}
+#}}}
+#{{{ BEAMER
+snippet frame
+alias   \begin{frame} \frame
+	\begin{frame}{${1:#:frametitle}}
+		${2:TARGET}
+	\end{frame}
+
+snippet block
+alias   \begin{block}
+	\begin{block}{${1:#:title}}
+		${2:TARGET}
+	\end{block}
+
+snippet exampleblock
+alias   \begin{exampleblock}
+	\begin{exampleblock}{${1:#:title}}
+		${2:TARGET}
+	\end{exampleblock}
+
+snippet alertblock
+alias   \begin{alertblock}
+	\begin{alertblock}{${1:#:title}}
+		${2:TARGET}
+	\end{alertblock}
+
+snippet columns
+alias   \begin{columns} \columns
+	\begin{columns}
+		\begin{column}{${1:#:width}${2:\\\textwidth}}
+			${0:#:body}
+		\end{column}
+	\end{columns}
+
+snippet column
+alias   \begin{column} \column
+	\begin{column}{${1:#:width}${2:\\\textwidth}}
+		${0:#:body}
+	\end{column}
+#}}}
+#{{{ BibLaTeX
+snippet addbibresource
+alias   \addbibresource
+	\addbibresource{${1:resource}}${0}
+
+snippet cite
+alias   \cite
+	\cite{${1}}${0}
+
+snippet nocite
+alias   \nocite
+	\nocite{${1}}${0}
+
+snippet supercite
+alias   \supercite
+	\supercite{${1}}${0}
+
+snippet autocite
+alias   \autocite
+	\autocite{${1}}${0}
+
+snippet fullcite
+alias   \fullcite
+	\fullcite{${1}}${0}
+#}}}
+#{{{ ENVIRONMENT
+snippet begin
+alias   \begin
+	\begin{${1:#:type}}
+		${2:TARGET}
+	\end{$1}
+
+snippet figure
+alias   \begin{figure} \figure
+	\begin{figure}[${1}]
+		\centering
+		\includegraphics[${2:width=${3\}}]{${4}}
+		\caption{${5}}
+		\label{${6}}
+	\end{figure}
+
+snippet lstlisting
+abbr    create new lst-environment
+alias   listing
+options head
+    \begin{lstlisting}[name = ${1}, caption=\lstname, language=${2}]
+        ${3}
+    \end{lstlisting}
+
+snippet lstinputlisting
+abbr    import source-code
+alias   inputlist
+options head
+    \lstinputlisting[name=${1}, caption=\lstname, language=${2}]{${3:sourcefile}}
+#}}}
+#{{{ OTHERS
+snippet \usepackage
+alias   pac \usepackage
+	\usepackage${1:[${2\}]}{${3}}
+
+snippet ref
+alias   \ref
+	\ref{${1}}${0}
+
+snippet label
+alias   \label
+	\label{${1}}${0}
+
+snippet rule
+alias \rule
+        \rule{\textwidth}{${1:1pt}}
+        ${0}
+
+snippet caption
+alias cap \catpion
+        \catpion{${1}}
+
+snippet \setlength\itemsep
+abbr    Set space between items
+alias   itemlen
+options word
+        \setlength\itemsep{${1:1pt}}
+#}}}
+
+#{{{ TIKZ
+snippet \begin{tikzpicture
+alias   tikzpicture
+options head
+    \begin{tikzpicture}
+        ${1}
+    \end{tikzpicture}
+
+snippet people
+options head
+    \usepackage{tikzpeople}
+
+snippet node
+options head
+    \node (${1}) [${2}] {${3}};
+
+snippet nodeat
+options head
+    \node[${1}] at (${2}) (${3}) {${4}};
+
+snippet \tikzstyle
+alias   tikzstyle
+options head
+    \tikzstyle{${1}} = [${2}]
+
+snippet \draw
+alias   draw
+options head
+    \draw [${1}] (${2}) -- (${3});
+
+snippet automaten
+alias   automata
+options head
+    \usetikzlibrary{automata}
+
+snippet inittikz
+options head
+    \usepackage{tikz}
+    \usetikzlibrary{shapes.geometric, arrows,positioning}
+
+snippet tree
+options head
+    \tikzset{
+      level/.style={ sibling distance=20mm/#1 },
+      level distance=10mm, }
+
+    \tikzset{
+      every node/.style={
+        draw, circle,
+        inner sep=0pt,
+        minimum width=15pt
+      },
+      thick }
+
+    \node {${1}}
+        child { node {${1}} };
+
+snippet child
+options head
+    child { node {${1}} }
+
+snippet arrow
+options head
+    \tikzstyle{arrow} = [thick,->,>=stealth]
+
+snippet flowchart
+options head
+    \tikzstyle{startstop} = [rectangle, rounded corners, minimum width=3cm, minimum height=1cm,text centered, draw=black, fill=red!30]
+    \tikzstyle{io} = [trapezium, trapezium left angle=70, trapezium right angle=110, minimum width=3cm, minimum height=1cm, text centered, draw=black, fill=blue!30]
+    \tikzstyle{process} = [rectangle, minimum width=3cm, minimum height=1cm, text centered, draw=black, fill=orange!30]
+    \tikzstyle{decision} = [diamond, minimum width=3cm, minimum height=1cm, text centered, draw=black, fill=green!30]
+#}}}
+
+# vim:foldmethod=marker:foldlevel=0

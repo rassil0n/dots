@@ -1,0 +1,261 @@
+######################
+# DOCUMENT STRUCTURE #
+######################
+snippet np "newpage" b
+\newpage
+endsnippet
+
+snippet bs "biskip" b
+\bigskip
+endsnippet
+
+snippet toc "Table of Contents" b
+\tableofcontents
+endsnippet
+
+snippet listoffigure "List of Figures" b
+\listoffigure
+endsnippet
+
+snippet part "Part" b
+\part{${1:${VISUAL:part}}}
+\label{part:$1}
+$0
+endsnippet
+
+snippet sec "Section" b
+\section{${1:${VISUAL:section}}}
+\label{sec:$1}
+$0
+endsnippet
+
+snippet ssec "SubSection" b
+\subsection{${1:${VISUAL:subsection}}}
+\label{ssec:$1}
+$0
+endsnippet
+
+snippet sssec "SubSubSection" b
+\subsubsection{${1:${VISUAL:subsubsection}}}
+\label{sssec:$1}
+$0
+endsnippet
+
+snippet frame "Add a frame" b
+\begin{frame}
+	${0:${VISUAL:frame}}
+\end{frame}
+endsnippet
+
+###########
+# LISTING #
+###########
+snippet item "Add bulleted list" b
+\begin{itemize}
+	\item $1
+\end{itemize}
+endsnippet
+
+snippet enum "Add orderd list" b
+\begin{enumerate}
+	\item $1
+\end{enumerate}
+endsnippet
+
+snippet desc "Add description" b
+\begin{description}
+	\item[$1] $2
+\begin{description}
+endsnippet
+
+snippet i "Add item to a list" b
+\item ${1:${VISUAL:item}}$0
+endsnippet
+
+
+#############
+# TEXTSTYLE #
+#############
+snippet bf "Write bold text" i
+\textbf{${1:${VISUAL:bold}}}$0
+endsnippet
+
+snippet it "Write italic text" i
+\textit{${1:${VISUAL:italic}}}$0
+endsnippet
+
+snippet ul "Write underlined Text" i
+\underline{${1:${VISUAL:underlined}}}$0
+endsnippet
+
+snippet tc "Change text color" i
+\textcolor{$1}{${2:${VISUAL:text to colorize}}}$0
+endsnippet
+
+snippet sup "Hightext" i
+\textsuperscript{${1:${VISUAL:hightext}}}$0
+endsnippet
+
+snippet sub "Lowtext" i
+\textsubscript{${1:${VISUAL:lowtext}}}$0
+endsnippet
+
+snippet code "Inline code" i
+\lstinline[language=$1]{${2:${VISUAL:inline code}}}$0
+endsnippet
+
+snippet verb "inline verbatim" i
+\verb!${1:${VISUAL:verb text}}!$0
+endsnippet
+
+###############
+# ENVIROMENTS #
+###############
+snippet blanko "Blanko enviroment"
+\begin{$1}
+	${0:${VISUAL:blanko}}
+\end{$1}
+endsnippet
+
+snippet left "Flush left enviroment" b
+\begin{flushleft}
+	${0:${VISUAL:left}}
+\end{flushleft}
+endsnippet
+
+snippet right "Flush right enviroment" b
+\begin{flushright}
+	${0:${VISUAL:right}}
+\end{flushright}
+endsnippet
+
+snippet center "Center Enviroment" b
+\begin{center}
+	${0:${VISUAL:center}}
+\end{center}
+endsnippet
+
+snippet wrapfig "Wrapfig enviroment" b
+\begin{wrapfigure}{$1}{$2}
+	${0:${VISUAL:wrapfigure}}
+\end{wrapfigure}
+\label{fig:$3}
+endsnippet
+
+snippet fig "Figure enviroment" b
+\begin{figure}[$1]
+	${0:${VISUAL:figure}}
+\end{figure}
+\label{fig:$2}
+endsnippet
+
+snippet tabular "Tabular enviroment" b
+\begin{tabular}{$1}
+	$2
+\end{tabular}
+endsnippet
+
+snippet table "Table enviroment" b
+\begin{table}
+	$0
+\end{table}
+\label{tab:$1}
+endsnippet
+
+snippet md "mdframed enviroment" b
+\begin{mdframed}
+	${0:${VISUAL:mdframed}}
+\end{mdframed}
+endsnippet
+
+snippet mddef "mdframed definition" b
+\begin{mdframed}[frametitle=$1,linecolor=red,linewidth=2pt]
+	\textit{${0:${VISUAL:mdframed}}
+\end{mdframed}
+
+endsnippet
+
+snippet math "Math enviroment" b
+\[ $1 \]
+endsnippet
+
+snippet lstinput "lstinputlisting" b
+\lstinputlisting[name=$1, caption\lstname, language=$2]{$3}
+endsnippet
+
+snippet lstlisting "lstlisting enviroment" b
+\begin{lstlisting}[name = $1, caption=\lstname, language=$2]
+	${0:${VISUAL:lstlisting}}
+\end{lstlisting}
+endsnippet
+
+snippet resizebox "resizebox enviroment" i
+\resizebox{$1\textwidth}{!}{${0:${VISUAL:resizebox}}}
+endsnippet
+
+###################
+# REF/LABEL/LINKS #
+###################
+snippet label "Add label" i
+\label{$1}
+endsnippet
+
+snippet ref "Add reference" i
+\ref{$1}
+endsnippet
+
+snippet href "Add Link" b
+\href{$1}{$2}
+endsnippet
+
+############
+# MATHMODE #
+############
+snippet math "Inline Mathmode" i
+$ $1 $ $2
+endsnippet
+
+snippet sum "Math: Sum" i
+sum_{$1}^{$2} $0
+endsnippet
+
+snippet frac "Math: Fraction" i
+\frac{$1}{$2} $0
+endsnippet
+
+snippet land "Math: logical AND" i
+\land $1
+endsnippet
+
+snippet neg "Math: logiacal NOT" i
+\neg $1
+endsnippet
+
+snippet lor "Math: logial OR" i
+\lor $1
+endsnippet
+
+snippet to "Math: logical TO" i
+\to $1
+endsnippet
+
+snippet equiv "Math: logical equiv" i
+\equiv $1
+endsnippet
+
+# ===== ETC =====
+snippet rule "Add horizontal rule" b
+\rule{\textwidth}{$1}
+endsnippet
+
+snippet pac "Usepackage" b
+\usepackage{$1}
+endsnippet
+
+snippet caption "Add caption" b
+\caption{$1}
+endsnippet
+
+snippet includegraphics "includegraphics" b
+\includegraphics[width=$1]{$2}
+endsnippet

@@ -1,0 +1,13 @@
+#!/bin/sh
+
+mpdcover_id=$(pgrep -f "python3.*mpd_art_box*")
+
+show(){
+	python3 /home/flo/.config/mpd/mpd_art_box.py --library ~/mm/music
+}
+
+hide(){
+	kill ${mpdcover_id}
+}
+
+[ -z ${mpdcover_id} ] && show || hide

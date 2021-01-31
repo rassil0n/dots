@@ -1,0 +1,4 @@
+#!/bin/sh
+file=$1
+	what=$(echo "evince\nvlc" | dmenu -p "Open in what?")
+	setsid "${what}" "${file}" &

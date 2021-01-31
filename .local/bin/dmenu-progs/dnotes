@@ -1,0 +1,153 @@
+#!/bin/sh
+
+# note-takeing with dmenu -c -l 10-prompt
+
+# Dependencies:
+#	- nvim
+#	- pandoc
+#	- pdflatex
+#	- zathura
+
+#############
+# VARIABLES #
+#############
+NOTEBOOKDIR=$HOME/.local/share/notes
+
+##########
+# CHECKS #
+##########
+notebookDirCheck(){
+if [ ! -d "${NOTEBOOKDIR}" ]
+then 	NODIR=$(echo "yes\nno" | dmenu -c -l 10 -i -p ""${NOTEBOOKDIR}" does no exist, create?")
+	case "${NODIR}" in
+		yes)	mkdir "${NOTEBOOKDIR}"
+			notify-send ""${NOTEBOOKDIR}" created" ;;
+		*)	notify-send "No notebook dir..."
+			exit ;;
+	esac
+
+fi
+}
+
+notebookCheck(){
+	if [ -z $(ls -1 "${NOTEBOOKDIR}") ]
+	then	NOBOOK=$(echo "yes\nno" | dmenu -c -l 10 -i -p "No notebooks, create a new one?")
+		case "${NOBOOK}" in
+			yes)	newNoteBook ;;
+			*)	exit ;;
+		esac
+	fi
+}
+
+
+########
+# EDIT #
+########
+editWhat(){
+	WHICH=$(ls -1 "${NOTEBOOKDIR}" | dmenu -c -l 10 -l 20 -i -p "Which notebook?")
+	if [ -z $(ls "${NOTEBOOKDIR}"/"${WHICH}"/*note) ]
+	then	notify-send "No notes in "${WHICH}""
+		exit
+	else	cd "${NOTEBOOKDIR}/${WHICH}"
+		WHAT=$(ls *note | dmenu -c -l 10 -l 20 -i -p "Open what note?")
+		[ -z "${WHAT}" ] && exit
+		${TERMINAL} -e nvim "${WHAT}"
+	fi
+}
+
+########
+# OPEN #
+########
+openWhat(){
+	OPENWHAT=$(echo "NOTE\nNOTEBOOK" | dmenu -c -l 10 -i -p "Open what?")
+	case "${OPENWHAT}" in
+		NOTE)	 	openNote ;;
+		NOTEBOOK)	openNoteBook ;;
+	esac
+}
+
+openNote(){
+	WHICH=$(ls -1 "${NOTEBOOKDIR}" | dmenu -c -l 10 -l 20 -i -p "Which notebook?")
+	if [ -z $(ls "${NOTEBOOKDIR}"/"${WHICH}"/*note) ]
+	then	notify-send "No notes in "${WHICH}""
+		exit
+	else	cd "${NOTEBOOKDIR}/${WHICH}"
+		WHAT=$(ls *note | dmenu -c -l 10 -l 20 -i -p "Open what note?")
+		rm -f dnote_open.pdf
+		pandoc "${WHAT}" -f markdown -o dnote_open.pdf
+		zathura dnote_open.pdf
+		rm -f dnote_open.pdf
+	fi
+
+}
+
+openNoteBook(){
+	WHICH=$(ls "${NOTEBOOKDIR}" | dmenu -c -l 10 -l 20 -i -p "Which notebook?")
+	$TERMINAL -e lf "${NOTEBOOKDIR}/${WHICH}"
+}
+
+
+#######
+# NEW #
+#######
+newWhat(){
+	NEWWHAT=$(echo "NOTE\nNOTEBOOK" | dmenu -c -l 10 -i -p "New what?")
+	case $NEWWHAT in
+		NOTE)		newNote ;;
+		NOTEBOOK)	newNoteBook ;;
+	esac
+
+}
+
+newNote(){
+	WHICH=$(ls "${NOTEBOOKDIR}" | dmenu -c -l 10 -l 20 -i -p "Which notebook?")
+	[ ! -d "${NOTEBOOKDIR}"/"${WHICH}" ] && mkdir ${NOTEBOOKDIR}/${WHICH}
+	createNewNote "${WHICH}"
+
+}
+
+createNewNote(){
+	WHICH=$1
+	TITLE=$(echo | dmenu -c -l 10 -p "Title of the new note")
+	[ -z "${TITLE}" ] && notify-send "no title given" && exit
+
+	NEWNOTE="${NOTEBOOKDIR}/${WHICH}/$(date +%y%m%d)_${TITLE}".note
+
+if [ -f "${NEWNOTE}" ]
+then 	notify-send "Note already exists... open it with nvim"
+	$TERMINAL -e nvim "${NEWNOTE}"
+else
+	touch "${NEWNOTE}"
+
+	echo "---" >> "${NEWNOTE}"
+	echo "title:" >> "${NEWNOTE}"
+	echo "\t- "${TITLE}"" >> "${NEWNOTE}"
+	echo "author:" >> "${NEWNOTE}"
+	echo "\t- <++>" >> "${NEWNOTE}"
+	echo "date:" >> "${NEWNOTE}"
+	echo "\t- $(date +%d.%m.%Y)" >> "${NEWNOTE}"
+	echo "---" >> "${NEWNOTE}"
+	echo "\n<++>" >> "${NEWNOTE}"
+
+	$TERMINAL -e nvim "${NEWNOTE}"
+fi
+}
+
+newNoteBook(){
+	NEWNOTEBOOK=$(echo | dmenu -c -l 10 -p "Name of the new NOTEBOOK")
+	if [ -z "${NEWNOTEBOOK}" ]
+	then	notify-send "No notebook name given..."
+		exit
+	else	mkdir "${NOTEBOOKDIR}/${NEWNOTEBOOK}"
+		newWhat
+	fi
+}
+
+notebookDirCheck
+notebookCheck
+MENUCHOICE=$(echo "new\nopen\nedit" | dmenu -c -l 10 -i -p "dnotes")
+case "${MENUCHOICE}" in
+	new)	newWhat ;;
+	open)	openWhat ;;
+	edit)	editWhat ;;
+esac

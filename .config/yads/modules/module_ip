@@ -1,0 +1,7 @@
+#!/bin/bash
+
+# get ip
+IP_ADDRESS=$(ip route get 1 | awk '{printf $7}')
+
+# create output
+echo "[ ${IP_ADDRESS} ]"

@@ -1,0 +1,7 @@
+#!/bin/sh
+
+# get windows
+windowcount=$(wc -l $HOME/.config/hides | awk '{print $1}')
+
+# create output
+[ -s $HOME/.config/hides ] && echo "[ 🤚${windowcount} ]"

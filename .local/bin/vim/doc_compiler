@@ -1,0 +1,52 @@
+#!/bin/sh
+
+args(){
+	action=$1
+	shift "$(($# ? 1 : 0))"
+	file=$(readlink -f $@)
+	dir=$(dirname "$file")
+	base="${file%.*}"
+}
+
+compiling(){
+	case "$file" in
+		*\.md)		pandoc "$file" -o "$base".pdf ;;
+		*\.ms|*\.groff) pdfroff -GktesR -b -w w -ms -mspdf "$file" >"$base".pdf ;;
+		*\.note)	pandoc "$file" -f markdown -o "$base".pdf ;;
+		*\.pres)	pandoc "$file" -f markdown -t beamer -o "$base"_pres.pdf ;;
+		*\.rmd)		echo "require(rmarkdown); render('$file')" | R --vanilla ;;
+		*\.tex)		pdflatex "$file" && pdflatex "$file";;
+		# *config.h)	clear; make ;;
+		# *\.java)	clear; javac "$file" ;;
+		# *\.ms)	pdfroff -ms -mspdf "$file" > "$base".pdf ;;
+	esac
+}
+
+preview(){
+	case "$file" in
+		*\.1)
+			$TERMINAL -e man -l "$file" ;;
+		*\.html)
+			firefox "$file" ;;
+
+		*\.m[ds] |*\.note | *\.org | *\.rmd | *\.tex)
+			zathura "$base".pdf ;;
+
+		*\.pres)
+			zathura "$base"_pres.pdf ;;
+
+		*\.sent)
+			sent "$file" ;;
+	esac
+}
+
+main(){
+	args $@
+
+	case ${action} in
+		-c) compiling ;;
+		-p) preview ;;
+	esac
+}
+
+main "$@"

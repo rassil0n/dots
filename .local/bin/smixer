@@ -1,0 +1,17 @@
+#!/bin/sh
+	command=$1
+	vol=$2
+	case $command in
+		# for cmus
+		play)	cmus-remote -p ;;
+		stop)	cmus-remote -s ;;
+		next)	cmus-remote -n ;;
+		prev)	cmus-remote -r ;;
+		pause)	cmus-remote -u ;;
+		# for amixer
+		mute)	amixer set Master -q toggle ;;
+		set)	amixer set Master -q $vol% ;;
+		up)	amixer set Master -q $vol%+ ;;
+		down)	amixer set Master -q $vol%- ;;
+		*)	echo "Wrong input" ;;
+	esac

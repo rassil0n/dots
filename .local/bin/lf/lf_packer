@@ -1,0 +1,9 @@
+#!/bin/sh
+printf "Please Enter Name for the archive: "
+read name
+
+tar -cf "${name}".tar -T /dev/null
+
+for file in $@
+do tar -vrf "${name}".tar $(echo "${file}" | awk -F "/" '{print $NF}')
+done

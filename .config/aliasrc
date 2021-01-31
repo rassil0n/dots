@@ -1,0 +1,57 @@
+# vim: filetype=zsh :
+
+# PROGS
+alias initcoc='vim -c "CocInstall coc-texlab coc-snippets coc-java coc-html"'
+alias Cal='nvim -c Calendar'
+alias r='nvim -c Renamer'
+alias rtv='rtv --enable-media'
+# alias v='nvim'
+# alias sv='sudo nvim'
+alias tmux='tmux -f ~/.config/tmux/tmux.conf'
+alias tmuxs='tmux source ~/.config/tmux/tmux.conf'
+
+# AUTOCOLOR
+alias grep='grep --color=auto'
+alias ls='ls --group-directories-first --color=auto'
+
+# LS
+alias ll='ls -hl'
+alias la='ls -hla'
+
+# CONFIG-FILES
+alias cfa='nvim ~/.config/aliasrc'
+alias cfv='nvim ~/.config/nvim/init.vim'
+alias cfz='nvim ~/.config/zsh/.zshrc'
+alias cff='nvim ~/.config/lf/lfrc'
+
+# CHANGE DIRS
+alias cd..='cd ..'
+alias cdc='cd ~/.config'
+alias cdd='cd ~/dl'
+alias cdD='cd ~/dox'
+alias cdm='cd /mnt'
+alias cdM='cd ~/mm'
+alias cdw='cd ~/work'
+alias cdr='cd ~/.local/repos'
+alias cdb='cd ~/.local/bin'
+alias cds='cd ~/.local/share'
+alias cdo='cd ~/.local/opt'
+alias cdn='cd ~/.local/share/notes'
+
+# APT
+alias pkg='sudo apt'
+alias UU='sudo apt upgrade && updatecheck'
+
+# GIT
+alias gadd='git add'
+alias gcommit='git commit -m'
+alias gpush='git push origin master'
+alias gpull='git pull'
+alias grm='git rm'
+
+# MISC
+alias cloneweb='wget -m -p -E -k'
+alias texclean='rm *{log,toc}'
+
+alias ru='ps axch -o cmd:15,%mem --sort=-%mem | head'
+alias cu='ps axch -o cmd:15,%cpu --sort=-%cpu | head'

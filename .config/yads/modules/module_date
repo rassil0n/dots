@@ -1,0 +1,7 @@
+#!/bin/sh
+
+# get time
+time=$(date +%H:%M)
+
+# create output
+echo "[ ${time} ]"

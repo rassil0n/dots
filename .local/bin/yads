@@ -1,0 +1,22 @@
+#!/bin/sh
+
+# set configfile
+CONFIGFILE=$HOME/.config/yads/config
+MODULEDIR=$HOME/.config/yads/modules
+
+build_outputstring(){
+        # source the config file, exit if it's not there
+        [ -f $CONFIGFILE ] && . $CONFIGFILE || exit
+
+        outputstring=""
+        for module in $MODULES; do
+                outputstring=$outputstring$($MODULEDIR/module_$module);done
+        echo $outputstring
+}
+
+
+[ -f $CONFIGFILE ] && . $CONFIGFILE || exit
+while true; do
+        xsetroot -name "$(build_outputstring)"
+        sleep $INTERVALL
+done

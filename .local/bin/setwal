@@ -1,0 +1,13 @@
+#!/bin/sh
+
+WAL=~/.local/share/wal.png
+
+setting(){
+	feh --no-fehbg --bg-scale ~/.local/share/wal.png
+}
+
+case $# in
+	0)	setting ;;
+	1)	cp "$1" "${WAL}" && setting ;;
+esac
+

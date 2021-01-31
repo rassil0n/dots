@@ -1,0 +1,64 @@
+#!/bin/sh
+
+args(){
+	action=$1
+	shift "$(($# ? 1 : 0))"
+	file=$@
+}
+
+standard_open(){
+	case "${file}" in
+		*.pdf)
+			setsid zathura "${file}" & ;;
+
+		*.png|*.jpg|*.jpeg|*.bmp|*.tif|*.tiff|*.gif)
+			setsid sxiv -aio "${file}" & ;;
+
+		*.doc|*.docx|*.ppt|*.pptx|*.xls|*.xlsx)
+			setsid libreoffice "${file}" & ;;
+
+		*.html|*.htm|*.xml|*.php)
+			setsid qutebrowser "${file}" & ;;
+
+		*.mkv|*.mp4|*.avi|*.mpge|*.mp2|*.ogv)
+			setsid mpv "${file}" & ;;
+
+		*.mp3|*.aac|*.flac|*.ogg|*.wav|*.wma)
+			setsid $TERMINAL -e mpv "${file}" & ;;
+
+		*.txt|*.log|*.cfg|*.tex|*.md|*.markdown)
+			$TERMINAL -e $EDITOR "${file}" & ;;
+
+		*.c|*.cpp|*.js|*.css|*.java)
+			setsid $TERMINAL -e $EDITOR "${file}" & ;;
+                *.epub|*.mobi|*.azw3)
+                        setsid ebook-viewer "${file}" & ;;
+
+		*)
+			case $(file --mime-type "${file}" -b) in
+				text/troff) man ./ $file;;
+				text/*) $EDITOR $file;;
+				image/x-xcf|image/svg+xml) setsid gimp $file >/dev/null 2>&1 & ;;
+				image/*) setsid sxiv -aio  "${file}" 2>/dev/null& ;;
+				audio/*) mpv --input-ipc-server=/tmp/mpvsoc$(date +%%s) "${file}" ;;
+				video/*) setsid mpv --input-ipc-server=/tmp/mpvsoc$(date +%%s) "${file}" -quiet >/dev/null 2>&1 & ;;
+				application/pdf) setsid zathura "${file}" >/dev/null 2>&1 & ;;
+			    esac
+	esac
+}
+
+choose_open(){
+	what=$(echo "ark\nevince\npdfstudio\nvlc\ngimp\nzathura-tabbed" | rofi -location 2 -font "monospace 10" -l 6 -dmenu -p "Open in what?")
+	setsid "${what}" "${file}" &
+}
+
+main(){
+	args $@
+
+	case ${action} in
+		-c)	choose_open ;;
+		-s)	standard_open ;;
+	esac
+}
+
+main "$@"

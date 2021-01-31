@@ -1,0 +1,62 @@
+snippet sec "section" i
+.NH ${1:${VISUAL:depth}}
+.XN ${2:${VISUAL:section}}
+$0
+endsnippet
+
+
+snippet bf "bold text" i
+\f[B]${1:${VISUAL:bold}}\f[P]$0
+endsnippet
+
+snippet it "italic text" i
+\f[I]${1:${VISUAL:bold}}\f[P]$0
+endsnippet
+
+snippet bit "bold-italic text" i
+\f[I]${1:${VISUAL:bold-italic}}\f[P]$0
+endsnippet
+
+snippet item "bullet list item" b
+.IP \(bu
+${1:${VISUAL:item}} $0
+endsnippet
+
+snippet subitem "insert subitem" b
+.RS
+.IP \(bu
+${1:${VISUAL:item}} $0
+.RE
+endsnippet
+
+snippet enum "enumerate list" b
+.nr step 1 1
+.IP \n[step]
+${1:${VISUAL:item}}
+$0
+endsnippet
+
+snippet nitem "enum item" b
+.IP \n+[step]
+${1:${VISUAL:item}} $0
+endsnippet
+
+snippet box "box" i
+
+.BX " ${1:${VISUAL:txt}} "
+$0
+endsnippet
+
+snippet tab "insert table" b
+.TS
+${1:$VISUAL:options} tab(|);
+${2:${VISUAL:formating}}.
+$0
+.TE
+endsnippet
+
+snippet pic "section" b
+.PS ${1:${VISUAL:scale}}
+$0
+.PE
+endsnippet

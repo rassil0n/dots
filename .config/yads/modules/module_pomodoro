@@ -1,0 +1,16 @@
+#!/bin/sh
+
+if [ -f /tmp/pomo ]
+then
+        # get pomodoro time
+	[ "$(pgrep -x pomodoro)" = "" ] && rm /tmp/pomo
+	mins=$(awk '{print int($2/60)}' /tmp/pomo)
+	secs=$(awk '{print int($2%60)}' /tmp/pomo)
+
+        # adding leading zeros
+	[ $mins -le 9 ] && mins="0${mins}"
+	[ $secs -le 9 ] && secs="0${secs}"
+
+        # create output
+	echo "[ ⏱️$mins:$secs ]"
+fi

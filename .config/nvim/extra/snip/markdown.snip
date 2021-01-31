@@ -1,0 +1,104 @@
+snippet init
+options head
+    ---
+    lof: true
+    toc: true
+    titlepage: true
+    title: "${1}"
+    lang: de
+    date: \today
+    author: [${2}]
+    subject: ${3}
+    header-includes:
+       - \usepackage{tikz}
+       - \usetikzlibrary{automata,shapes.geometric,arrows}
+    ...
+
+snippet bold
+alias   bf
+options word
+    **${1}**${2}
+
+snippet italic
+alias   it
+options word
+    *${1}*${2}
+
+snippet tex
+abbr
+alias
+options head
+    <!-- TeX -->
+        ${1}
+    <!-- -->
+
+snippet \begin{tikzpicture
+alias   tikzpicture
+options head
+    \begin{tikzpicture}
+        ${1}
+    \end{tikzpicture}
+
+snippet people
+options head
+    \usepackage{tikzpeople}
+
+snippet node
+options head
+    \node (${1}) [${2}] {${3}};
+
+snippet nodeat
+options head
+    \node[${1}] at (${2}) (${3}) {${4}};
+
+snippet \tikzstyle
+alias   tikzstyle
+options head
+    \tikzstyle{${1}} = [${2}]
+
+snippet \draw
+alias   draw
+options head
+    \draw [${1}] (${2}) -- (${3});
+
+snippet automaten
+alias   automata
+options head
+    \usetikzlibrary{automata}
+
+snippet inittikz
+options head
+    \usepackage{tikz}
+    \usetikzlibrary{shapes.geometric, arrows,positioning}
+
+snippet tree
+options head
+    \tikzset{
+      level/.style={ sibling distance=20mm/#1 },
+      level distance=10mm, }
+
+    \tikzset{
+      every node/.style={
+        draw, circle,
+        inner sep=0pt,
+        minimum width=15pt
+      },
+      thick }
+
+    \node {${1}}
+        child { node {${1}} };
+
+snippet child
+options head
+    child { node {${1}} }
+
+snippet arrow
+options head
+    \tikzstyle{arrow} = [thick,->,>=stealth]
+
+snippet flowchart
+options head
+    \tikzstyle{startstop} = [rectangle, rounded corners, minimum width=3cm, minimum height=1cm,text centered, draw=black, fill=red!30]
+    \tikzstyle{io} = [trapezium, trapezium left angle=70, trapezium right angle=110, minimum width=3cm, minimum height=1cm, text centered, draw=black, fill=blue!30]
+    \tikzstyle{process} = [rectangle, minimum width=3cm, minimum height=1cm, text centered, draw=black, fill=orange!30]
+    \tikzstyle{decision} = [diamond, minimum width=3cm, minimum height=1cm, text centered, draw=black, fill=green!30]

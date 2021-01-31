@@ -1,0 +1,18 @@
+snippet sec
+abbr    Insert a new section
+alias   .NH NH nh
+options head
+        \"{{{ - $1
+                .NH
+                .XN ${1:Title}
+                ${0}
+        \"}}}
+
+snippet ssec
+abbr    Insert a new subsection
+options head
+        \"{{{ -- $1
+                .NH 2
+                .XN ${1:Title}
+                ${0}
+        \"}}}

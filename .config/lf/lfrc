@@ -1,0 +1,268 @@
+# BASIC VARS
+set drawbox
+set previewer ~/.config/lf/pv
+set cleaner ~/.config/lf/clear_img.sh
+set scrolloff 10
+# set color256
+set icons
+
+# needed for the most scripts
+set shell zsh
+set shellopts '-e:--shwordsplit'
+set ifs "\n"
+
+# CMDS/FUNCTIONS
+
+cmd on-cd &{{
+	printf "\033]0; (lf) - $PWD\007" > /dev/tty
+}}
+
+on-cd
+
+cmd yank-dirname ${{
+    dirname -- "$f" | tr -d '\n' | xclip -i -selection clipboard
+}}
+
+cmd yank-path ${{
+    echo "$fx" | xclip -i -selection clipboard
+}}
+
+cmd yank-basename ${{
+    echo "$fx" |
+      xargs -r -d '\n' basename -a -- |
+      xclip -i -selection clipboard
+}}
+
+cmd yank-basename-without-extension ${{
+    echo "$fx" |
+      xargs -r -d '\n' basename -a -- |
+      awk -e '{
+        for (i=length($0); i > 0; i--) {
+          if (substr($0, i, 1) == ".") {
+            if (i == 1) print $0
+            else print substr($0, 0, i-1)
+
+            break
+          }
+        }
+
+        if (i == 0)
+          print $0
+      }' | xclip -i -selection clipboard
+}}
+# cmd cd-fuzzy ${{
+# 	lf -remote "send $id cd $(ls -d1 */ |fzf | sed 's/\ /\\ /g')"
+# }}
+
+cmd cd-fuzzy ${{
+	lf -remote "send $id select $(ls -d1 */ | fzf | sed 's/\ /\\ /g')"
+}}
+
+cmd sel-fuzzy ${{
+	lf -remote "send $id select $(find -maxdepth 1 -type f | fzf | sed 's/\ /\\ /g')"
+}}
+
+cmd rename %[ -e $1 ] && printf "file exists" || mv $f $1
+cmd editExt ${{ setsid st -e $EDITOR $f & }}
+cmd diskUsage ${{ du --max-depth=1 -h --apparent-size | less }}
+
+cmd tofold ${{
+	set -f
+	clear; echo
+	# printf "move files to folder: "
+	newd=$(ls -d1 */ | fzf --print-query | tail -1)
+	# read newd
+
+	if [ -d $newd ]
+	then 	printf "folder \"$newd\" exists, merge? [y/N]"
+		read choice
+		[ "$choice" = "y" ] && mv $fx $newd
+
+	else 	mkdir $newd && mv $fx $newd; fi
+}}
+
+# Edit the current filename
+cmd rename-end ${{
+	# get 'basename' of the selection
+	filename="${f##*/}"
+	# quote it so we won't deal with quotes in the lf -remote command
+	filename="$(printf '%q' "$filename" |sed 's/\\//g')"
+	filename="${filename// /<space>}"
+	lf -remote "send $id push :rename<space>'$filename'<c-b>"
+}}
+
+
+# Edit filename before the extension
+cmd rename-ext ${{
+	# get 'basename' of the selection
+	filename="${f##*/}"
+	# quote it so we won't deal with quotes in the lf -remote command
+	filename="$(printf '%q' "$filename" |sed 's/\\//g')"
+	filename="${filename// /<space>}"
+	lf -remote "send $id push :rename<space>'$filename'<a-b><c-b>"
+}}
+
+# bulk-rename
+cmd bulk-rename ${{
+    old=$(mktemp)
+    new=$(mktemp)
+    [ -n $fs ] && fs=$(ls)
+    printf "$fs\n" > $old
+    printf "$fs\n" > $new
+    $EDITOR $new
+    [ $(cat $new | wc -l) -ne $(cat $old | wc -l) ] && exit
+    paste $old $new | while read names; do
+        src=$(printf $names | cut -f1)
+        dst=$(printf $names | cut -f2)
+        [ $src = $dst ] && continue
+        [ -e $dst ] && continue
+        mv $src $dst
+    done
+    rm $old $new
+    lf -remote "send $id unselect"
+}}
+
+cmd delete ${{
+	set -f
+	clear; echo
+	printf "%s\n\t" "$fx"
+	printf "delete?[y/N]"
+	read ans
+	[ $ans = "y" ] && rm -rf $fx
+}}
+
+cmd paste ${{
+    load=$(lf -remote 'load')
+    mode=$(echo "$load" | sed -n '1p')
+    list=$(echo "$load" | sed '1d')
+    if [ $mode = 'copy' ]; then
+        rsync -av --ignore-existing --progress $list . \
+        | stdbuf -i0 -o0 -e0 tr '\r' '\n' \
+        | while read line; do
+            # lf -remote "send $id echo $line"
+            echo "$line"
+        done
+    elif [ $mode = 'move' ]; then
+        mv -n $list .
+    fi
+    lf -remote 'send load'
+    lf -remote 'send clear'
+}}
+
+cmd dragon %swallow dragon-drag-and-drop -a -x $fx
+cmd cpdragon %cpdragon
+cmd mvdragon %mvdragon
+
+
+cmd info ${{
+	$HOME/.config/lf/pv $fx | less
+}}
+
+# UNBIND KEYS
+map y; map d; map p; map d; map c; map g; map q; map r; map w; map n
+
+
+map i info
+map gg top
+
+# CHANGE DIR
+map <c-f> $lf -remote "send $id select '$(fzf)'"
+map <c-g> $lf -remote "send $id cd '$(find -type d | fzf)'"
+map cd push :cd<space>
+map gc cd ~/.config
+map gd cd ~/dl
+map gD cd ~/dox
+map gm cd /mnt
+map gM cd ~/mm
+map gt cd ~/temp
+map gw cd ~/work
+map gr cd ~/.local/repos
+map gb cd ~/.local/bin
+map gs cd ~/.local/share
+map go cd ~/.local/opt
+map gn cd ~/.local/share/notes
+map gh cd ~
+
+# COPY/CUT/PASE
+map yy copy
+map dd cut
+map pp paste
+
+# GUI COPY/MOVE
+map dr dragon
+map dc cpdragon
+map dm mvdragon
+
+# DATA MANIPULATING
+map ad push %mkdir<space>''<left>
+map af push %touch<space>''<left>
+map tf tofold
+map D delete
+
+# RENAME
+map C push :rename<space>''<left>
+map re rename-ext
+map A rename-end
+map br bulk-rename
+
+# ARCHIVES
+map x $lf_extract -c $f
+map X $lf_extract $f
+
+map ct %lf_packer $fs
+map cz $gzip $f
+map cx $xz $f
+map c2 $bzip2 $f
+
+# OPENING FILES
+map o $lf_opener -s $f
+map O &lf_opener -c $f
+# map O &lf_choose_opener $f
+map e $$EDITOR $f
+map E editExt
+
+# SYSTEM
+map ZZ quit
+map ZQ quit
+map <c-z> $ kill -STOP $PPID
+map <c-r> reload
+map R redraw
+map W $setwal $f
+map . set hidden!
+map du diskUsage
+map <c-e> down
+map <c-y> up
+
+# SHELL
+map s shell
+# map <enter> shell
+map S $$SHELL
+map <enter> cd-fuzzy
+map <backspace2> sel-fuzzy
+
+map wd yank-dirname
+map wp yank-path
+map wb yank-basename
+map we yank-basename-without-extension
+
+# FILEPICKER TMUX
+cmd zle-cd %printf 'cd %q && zle reset-prompt\n' "$PWD" >&$ZLE_FIFO
+
+cmd zle-insert-relative %{{
+    for f in $fx; do
+        printf 'LBUFFER+="${LBUFFER:+ }${(q)$(realpath %q --relative-to=$PWD)}"\n' "$f" >&$ZLE_FIFO
+    done
+}}
+
+cmd zle-insert-absolute %{{
+    for f in $fx; do
+        printf 'LBUFFER+="${LBUFFER:+ }%q"\n' "$f" >&$ZLE_FIFO
+    done
+}}
+
+cmd zle-init :{{
+    map . zle-cd
+    map a zle-insert-relative
+    map A zle-insert-absolute
+}}
+&[[ -n "$ZLE_FIFO" ]] && lf -remote "send $id zle-init"

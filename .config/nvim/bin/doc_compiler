@@ -1,0 +1,32 @@
+#!/bin/sh
+# set -x
+file=$(readlink -f "$1")
+prev=$2
+dir=$(dirname "$file")
+base="${file%.*}"
+
+
+compiling(){
+	case "$file" in
+		# *config.h)	clear; make ;;
+		# *\.md)		pandoc "$file" --toc -o "$base".pdf ;;
+		# *\.java)	clear; javac "$file" ;;
+		*\.md)		pandoc "$file" -o "$base".pdf ;;
+		*\.note)	pandoc "$file" -f markdown -o "$base".pdf ;;
+		*\rmd)		echo "require(rmarkdown); render('$file')" | R --vanilla ;;
+		*\.pres)	pandoc "$file" -f markdown -t beamer -o "$base"_pres.pdf ;;
+		*\.sent)	sent "$file" ;;
+		*.tex)		lualatex "$file" && lualatex "$file"
+	esac
+}
+
+[ "$2" = "-p" ] &&
+	case "$file" in
+			*\.md)		zathura "$base".pdf ;;
+			*\.note)	zathura "$base".pdf ;;
+			*\.rmd)		zathura "$base".pdf ;;
+			*\.tex)		zathura "$base".pdf ;;
+			*\.pres)	zathura "$base"_pres.pdf ;;
+			*\.html)	firefox "$file" ;;
+	esac && exit ||
+compiling

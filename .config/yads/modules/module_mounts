@@ -1,0 +1,7 @@
+#!/bin/sh
+
+# get mounts
+mounted=$(df -h | awk '$1~/\/dev|mtp/&&$1!~/sda/{printf "%s (%s) ",$6,$4}')
+
+# create output
+[ ! -z "${mounted}" ] && echo "[ ⎆${mounted}]"
