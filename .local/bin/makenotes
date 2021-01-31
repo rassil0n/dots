@@ -1,0 +1,153 @@
+#!/bin/sh
+
+NOTESDIR=$HOME/.local/share/notes
+READER=zathura
+
+myFZF(){
+	fzf --layout reverse --info inline --border
+}
+
+args(){
+	action=$1
+	shift "$(($# ? 1 : 0))"
+	file="$@"
+}
+
+printHelp(){
+cat << EOF
+
+	usage: makenotes <OPTION> <NOTE>
+
+		OPTIONS:
+		--------
+		    all | a | -a)	compile all notes
+		compile | c | -c)	compile note
+		   edit | e | -e)	edit note
+		   find | f | -f)	search in notes
+		   list | l | -l)	list all notes
+		   new  | n | -n)	make new note
+		   show | s | -s)	show compiled note
+		 export | x | -x)	export all notes in pdf
+EOF
+}
+
+compile(){
+
+		if [ "$1" = "" ];then
+			noteToCompile=$(ls -1 *note | sed 's/\.note//g' | myFZF)
+		else noteToCompile="$1";fi
+
+		[ -z "$noteToCompile" ] && exit
+
+		echo "Compiling ${noteToCompile}..."
+		pandoc "${noteToCompile}".note -o pdf/"${noteToCompile}".pdf\
+			--from markdown\
+			--template ~/.local/share/makenotes/theme.tex\
+			--listings
+}
+
+compileAll(){
+	for file in *.note; do
+		compile "${file%.*}"
+	done
+}
+
+listNotes(){
+	chosenNote=$(ls -1 *note | sed 's/\.note//g' | myFZF)
+	[ -z "$chosenNote" ] && exit
+}
+
+showNote(){
+	if [ "$1" = "" ];then
+		noteToShow=$(ls -1 *note | sed 's/\.note//g' | myFZF)
+	else noteToShow="$1";fi
+
+
+	[ -z "$noteToShow" ] && exit
+
+	[ ! -f pdf/"${noteToShow}".pdf ] && compile "${noteToShow}"
+	setsid $READER pdf/"${noteToShow}".pdf &
+}
+
+editNote(){
+
+		if [ "$1" = "" ];then
+			noteToEdit=$(ls -1 *note | sed 's/\.note//g' | myFZF)
+		else noteToEdit="$1";fi
+
+		[ -z "$noteToEdit" ] && exit
+
+		nvim "${noteToEdit}".note
+}
+
+newNote(){
+	echo -n "Please enter name for the note: "; read title
+	[ -z "$title" ] && exit
+
+	if [ -f "${title}".note ];then
+		echo "Note is already existing..."
+		echo -n "Edit instead? (y/N) "; read ans
+		case $ans in y|Y) editNote "${title}";; *) exit; esac
+	else
+		nvim -c "w" "${title}".note; fi
+}
+
+findInNotes(){
+	noteFound=$(grep --line-buffered -r "" *.note | myFZF | sed 's/:.*$//g;s/\.note//')
+	[ -z "$noteFound" ] && exit
+
+	echo -n "Open in vim (v) or reader (r)? "; read openIn
+	[ -z "$openIn" ] && exit
+	case $openIn in
+		v|V|vim) editNote "${noteFound}";;
+		r|R|reader) showNote ${noteFound};;
+		*) exit ;;
+	esac
+}
+
+exportNotes(){
+	echo -n "Pleas enter destination ($HOME/notesExport): "
+	read exportDir
+
+	[ -z "$exportDir" ] && exportDir=$HOME/notesExport
+	[ ! -d "$exportDir" ] && mkdir "$exportDir"
+	compileAll && cp pdf/*.pdf "$exportDir"
+	echo "\nExport done!"
+}
+
+
+main(){
+	args $@
+
+	cd $NOTESDIR
+
+	case $action in
+		a|all|-a)
+			compileAll ;;
+
+		c|compile|-c)
+			compile "${file}";;
+
+		e|edit|-e)
+			editNote "${file}";;
+
+		f|find|-f)
+			findInNotes ;;
+
+		l|list|-l)
+			listNotes ;;
+
+		n|new|-n)
+			newNote ;;
+
+		s|show|-s)
+			showNote "${file}";;
+
+		x|export|-x)
+			exportNotes ;;
+		*)
+			printHelp ;;
+	esac
+}
+
+main "$@"

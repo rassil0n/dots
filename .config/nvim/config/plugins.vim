@@ -88,8 +88,8 @@ Plug 'junegunn/vim-peekaboo'			" list what is in the vim registers
 	let g:peekaboo_prefix = '<leader>'
 "}}}
 "{{{ LF FOR VIM
-Plug 'rbgrouleff/bclose.vim'			" needed for the lf plugin
-Plug 'ptzz/lf.vim'				" lf for vim
+" Plug 'rbgrouleff/bclose.vim'			" needed for the lf plugin
+" Plug 'ptzz/lf.vim'				" lf for vim
 "}}}
 " {{{ADDITONAL MODES
 Plug 'dhruvasagar/vim-table-mode'		" easy formatting of markdown tables

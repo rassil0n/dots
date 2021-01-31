@@ -11,8 +11,9 @@ options head
     subject: ${3}
     header-includes:
        - \usepackage{tikz}
-       - \usetikzlibrary{automata,shapes.geometric,arrows}
+       - \usetikzlibrary{positioning,automata,shapes.geometric,arrows}
     ...
+    ${0}
 
 snippet bold
 alias   bf
@@ -65,11 +66,6 @@ snippet automaten
 alias   automata
 options head
     \usetikzlibrary{automata}
-
-snippet inittikz
-options head
-    \usepackage{tikz}
-    \usetikzlibrary{shapes.geometric, arrows,positioning}
 
 snippet tree
 options head
