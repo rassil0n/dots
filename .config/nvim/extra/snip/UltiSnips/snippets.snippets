@@ -1,0 +1,18 @@
+global !p
+from vimsnippets import complete
+
+endglobal
+
+snippet new "Ultisnips snippet definition" b
+`!p snip.rv = "snippet"` ${1:Tab_trigger} "${2:Description}" ${3:b}
+${0:${VISUAL}}
+`!p snip.rv = "endsnippet"`
+endsnippet
+
+snippet vis "${VISUAL}" i
+\$\{VISUAL${1:${2:default}${3:/transform/}}\}
+endsnippet
+
+snippet v "varaible" i
+${$1`!p snip.rv=complete(t[1], ['0','1', '2', '3', '4', '5', '6', '7'])`:$0}
+endsnippet

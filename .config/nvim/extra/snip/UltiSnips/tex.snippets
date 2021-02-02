@@ -1,0 +1,630 @@
+# PROJECT:	UltiSnips
+# FILE:		tex.snippets
+# AUTHOR:   rassil0n
+# MAIL:		rassil0n@protonmail.com
+# GIT:		https://github.com/rassil0n
+
+#[[[FUNCTIONS
+priority -50
+
+extends texmath
+
+global !p
+
+from vimsnippets import complete
+
+def create_table(snip):
+	rows = snip.buffer[snip.line].split('x')[0]
+	cols = snip.buffer[snip.line].split('x')[1]
+	art = snip.buffer[snip.line].split(' ')[1]
+
+	int_val = lambda string: int(''.join(s for s in string if s.isdigit()))
+
+	rows = int_val(rows)
+	cols = int_val(cols)
+
+	offset = cols + 1
+	old_spacing = snip.buffer[snip.line][:snip.buffer[snip.line].rfind('\t') + 1]
+
+	snip.buffer[snip.line] = ''
+
+	final_str = old_spacing + "\\begin{"+ art +"}{|" + "|".join(['$' + str(i + 1) for i in range(cols)]) + "|}\n"
+
+	for i in range(rows):
+		final_str += old_spacing + '\t'
+		final_str += " & ".join(['$' + str(i * cols + j + offset) for j in range(cols)])
+
+		final_str += " \\\\\\\n"
+
+	final_str += old_spacing + "\\end{" + art + "}\n$0"
+
+	snip.expand_anon(final_str)
+
+def add_row(snip):
+	row_len = int(''.join(s for s in snip.buffer[snip.line] if s.isdigit()))
+	old_spacing = snip.buffer[snip.line][:snip.buffer[snip.line].rfind('\t') + 1]
+
+	snip.buffer[snip.line] = ''
+
+	final_str = old_spacing
+	final_str += " & ".join(['$' + str(j + 1) for j in range(row_len)])
+	final_str += " \\\\\\"
+
+	snip.expand_anon(final_str)
+
+endglobal
+#]]]
+#[[[META
+snippet np "Enter new page" b
+\newpage
+$0
+endsnippet
+
+snippet bs "Enter Big skip" b
+\bigskip
+$0
+endsnippet
+
+snippet toc "Table of Contents" b
+\tableofcontents
+$0
+endsnippet
+
+snippet lof "List of Figures" b
+\listoffigures
+$0
+endsnippet
+
+snippet pac "Package" b
+\usepackage`!p snip.rv='[' if t[1] else ""`${1:options}`!p snip.rv = ']' if t[1] else ""`{${2:package}}$0
+endsnippet
+
+snippet class "Documentclass" b
+\documentclass[$2]{$1`!p snip.rv=complete(t[1], ['article', 'scrartcl', 'proc', 'minimal', 'report', 'scrreprt', 'book', 'scrbook', 'amsbook', 'amsart', 'standalone', 'slides', 'memoir', 'letter', 'beamer'])`}
+endsnippet
+#]]]
+#[[[STRUCTURE
+snippet part "Part" b
+\part{${1:part name}}
+\label{prt:${2:${1/(\w+)|\W+/(?1:\L$0\E:_)/ga}}}
+
+$0
+endsnippet
+
+snippet cha "Chapter" b
+\chapter{${1:chapter name}}
+\label{cha:${2:${1/\\\w+\{(.*?)\}|\\(.)|(\w+)|([^\w\\]+)/(?4:_:\L$1$2$3\E)/ga}}}
+
+$0
+endsnippet
+
+snippet sec "Section"
+\section{${1:${VISUAL:section name}}}
+\label{sec:${2:${1/\\\w+\{(.*?)\}|\\(.)|(\w+)|([^\w\\]+)/(?4:_:\L$1$2$3\E)/ga}}}
+
+$0
+endsnippet
+
+snippet sec* "Section"
+\section*{${1:${VISUAL:section name}}}
+\label{sec:${2:${1/\\\w+\{(.*?)\}|\\(.)|(\w+)|([^\w\\]+)/(?4:_:\L$1$2$3\E)/ga}}}
+
+${0}
+endsnippet
+
+
+snippet sub "Subsection"
+\subsection{${1:${VISUAL:subsection name}}}
+\label{sub:${2:${1/\\\w+\{(.*?)\}|\\(.)|(\w+)|([^\w\\]+)/(?4:_:\L$1$2$3\E)/ga}}}
+
+$0
+endsnippet
+
+snippet sub* "Subsection"
+\subsection*{${1:${VISUAL:subsection name}}}
+\label{sub:${2:${1/\\\w+\{(.*?)\}|\\(.)|(\w+)|([^\w\\]+)/(?4:_:\L$1$2$3\E)/ga}}}
+
+${0}
+endsnippet
+
+snippet ssub "Subsubsection"
+\subsubsection{${1:${VISUAL:subsubsection name}}}
+\label{ssub:${2:${1/\\\w+\{(.*?)\}|\\(.)|(\w+)|([^\w\\]+)/(?4:_:\L$1$2$3\E)/ga}}}
+
+$0
+endsnippet
+
+snippet ssub* "Subsubsection"
+\subsubsection*{${1:${VISUAL:subsubsection name}}}
+\label{ssub:${2:${1/\\\w+\{(.*?)\}|\\(.)|(\w+)|([^\w\\]+)/(?4:_:\L$1$2$3\E)/ga}}}
+
+${0}
+endsnippet
+
+snippet par "Paragraph"
+\paragraph{${1:${VISUAL:paragraph name}}}
+\label{par:${2:${1/\\\w+\{(.*?)\}|\\(.)|(\w+)|([^\w\\]+)/(?4:_:\L$1$2$3\E)/ga}}}
+
+$0
+endsnippet
+
+snippet subp "Subparagraph"
+\subparagraph{${1:${VISUAL:subparagraph name}}}
+\label{par:${2:${1/\\\w+\{(.*?)\}|\\(.)|(\w+)|([^\w\\]+)/(?4:_:\L$1$2$3\E)/ga}}}
+
+$0
+endsnippet
+#]]]
+#[[[LISTS
+snippet enum "Enumerate" b
+\begin{enumerate}
+	\item $0
+\end{enumerate}
+endsnippet
+
+snippet item "Itemize" b
+\begin{itemize}
+	\item $0
+\end{itemize}
+endsnippet
+
+snippet desc "Description" b
+\begin{description}
+	\item[$1] $0
+\end{description}
+endsnippet
+
+snippet it "Individual item" b
+\item ${1:${VISUAL}}$0
+endsnippet
+#]]]
+#[[[FONT
+snippet bf "Bold" i
+\textbf{${1:${VISUAL}}}$0
+endsnippet
+
+snippet bfseries "bfseries environment" b
+\begin{bfseries}
+	${1:${VISUAL}}
+\end{bfseries}
+$0
+endsnippet
+
+snippet med "Medium font" i
+\textbf{${1:${VISUAL}}}$0
+endsnippet
+
+snippet bfseries "mdseries environment" b
+\begin{bfseries}
+	${1:${VISUAL}}
+\end{bfseries}
+$0
+endsnippet
+
+snippet ita "Italics" i
+\textit{${1:${VISUAL}}}$0
+endsnippet
+
+snippet itshape "itshape environment" b
+\begin{itshape}
+	${1:${VISUAL}}
+\end{itshape}
+$0
+endsnippet
+
+snippet und "Underline" i
+\underline{${1:${VISUAL}}}$0
+endsnippet
+
+snippet tt "type..." i
+\texttt{${1:${VISUAL}}}$0
+endsnippet
+
+snippet ttfamily "ttfamily environment" b
+\begin{ttfamily}
+	${1:${VISUAL}}
+\end{ttfamily}
+$0
+endsnippet
+
+snippet sf "sans serif" i
+\textsf{${1:${VISUAL}}}$0
+endsnippet
+
+snippet sffamily "sffamily environment" b
+\begin{sffamily}
+	${1:${VISUAL}}
+\end{sffamily}
+$0
+endsnippet
+
+snippet rm "roman" i
+\textrm{${1:${VISUAL}}}$0
+endsnippet
+
+snippet rmfamily "rmfamily environment" b
+\begin{ttfamily}
+	${1:${VISUAL}}
+\end{rmfamily}
+$0
+endsnippet
+
+snippet up "up" i
+\textup{${1:${VISUAL}}}$0
+endsnippet
+
+snippet upshape "upshape environment" b
+\begin{upshape}
+	${1:${VISUAL}}
+\end{upshape}
+$0
+endsnippet
+
+snippet sc "sc" i
+\textsc{${1:${VISUAL}}}$0
+endsnippet
+
+snippet scshape "scshape environment" b
+\begin{scshape}
+	${1:${VISUAL}}
+\end{scshape}
+$0
+endsnippet
+
+snippet sl "sl" i
+\textsl{${1:${VISUAL}}}$0
+endsnippet
+
+snippet slshape "slshape environment" b
+\begin{slshape}
+	${1:${VISUAL}}
+\end{slshape}
+$0
+endsnippet
+
+snippet "code()?( (\S+))?" "Inline code" ir
+\lstinline[${1:`!p
+snip.rv = match.group(3) if match.group(2) is not None else "language"`}]{${2:${VISUAL:code}}}$0
+endsnippet
+
+snippet sups "Supscript" i
+\textsuperscript{${1:${VISUAL:hightext}}}$0
+endsnippet
+
+snippet subs "Subscript" i
+\textsubscript{${1:${VISUAL:lowtext}}}$0
+endsnippet
+
+snippet verb "inline verbatim" i
+\verb!${1:${VISUAL:verb text}}!$0
+endsnippet
+
+
+#]]]
+#[[[ENVIRONMENT
+snippet "\\?b(egin)?" "begin{} / end{}" br
+\begin{${1:something}}
+	${0:${VISUAL}}
+\end{$1}
+endsnippet
+
+snippet "lstinput()?( (\S+))?" "import source code to display" br
+\lstinput[language=${1:`!p
+snip.rv = match.group(3) if match.group(2) is not None else "language"`},name=${2:Name},caption=\lstname]{${0:${VISUAL:sourcefile}}}
+endsnippet
+
+snippet "lstlist(ing)?( (\S+))?" "lstlisting environment" br
+\begin{lstlisting}[language=${1:`!p
+snip.rv = match.group(3) if match.group(2) is not None else "language"`},name=${2:Name},caption=\lstname]
+${0:${VISUAL:code}}
+\end{lstlisting}
+endsnippet
+
+snippet abs "abstract environment" b
+\begin{abstract}
+	$0
+\end{abstract}
+endsnippet
+
+snippet tab "tabular / array environment" b
+\begin{${1:t}${1/(t)$|(a)$|(.*)/(?1:abular)(?2:rray)/}}{${2:c}}
+$0${2/(?<=.)(c|l|r)|./(?1: & )/g}
+\end{$1${1/(t)$|(a)$|(.*)/(?1:abular)(?2:rray)/}}
+endsnippet
+
+pre_expand "create_table(snip)"
+snippet "gentbl(\d+)x(\d+) (\w+)" "Generate table of *width* by *height*" r
+endsnippet
+
+pre_expand "add_row(snip)"
+snippet "tr(\d+)" "Add table row of dimension ..." r
+endsnippet
+
+snippet table "Table environment" b
+\begin{table}[${1:htpb}]
+	\centering
+	\caption{${2:caption}}
+	\label{tab:${3:label}}
+	\begin{${4:t}${4/(t)$|(a)$|(.*)/(?1:abular)(?2:rray)/}}{${5:c}}
+	$0${5/(?<=.)(c|l|r)|./(?1: & )/g}
+	\end{$4${4/(t)$|(a)$|(.*)/(?1:abular)(?2:rray)/}}
+\end{table}
+endsnippet
+
+snippet fig "Figure environment" b
+\begin{figure}[${2:htpb}]
+	\centering
+	\includegraphics[width=${3:0.8}\textwidth]{${4:name.ext}}
+	\caption{${4/(\w+)\.\w+/\u$1/}$0}
+	\label{fig:${4/(\w+)\.\w+/$1/}}
+\end{figure}
+endsnippet
+
+snippet left "Flush left environment" b
+\begin{flushleft}
+	${0:${VISUAL:left}}
+\end{flushleft}
+endsnippet
+
+snippet right "Flush right environment" b
+\begin{flushright}
+	${0:${VISUAL:right}}
+\end{flushright}
+endsnippet
+
+snippet center "center environment" b
+\begin{center}
+	${0:${VISUAL:right}}
+\end{center}
+endsnippet
+
+snippet wrapfig "Figure environment" b
+\begin{wrapfigure}[${2:htpb}]
+	\centering
+	\includegraphics[width=${3:0.8}\textwidth]{${4:name.ext}}
+	\caption{${4/(\w+)\.\w+/\u$1/}$0}
+	\label{wrapfig:${4/(\w+)\.\w+/$1/}}
+\end{wrapfigure}
+endsnippet
+
+snippet resizebox "Resizebox environment" i
+\resizebox{$1\textwidth}{!}{${2:${VISUAL:resizebox}}}$0
+endsnippet
+
+snippet md "mdframed environment" b
+\begin{mdframed}
+	${0:${VISUAL:mdframed}}
+\end{mdframed}
+endsnippet
+
+snippet mddef "mdframed definition" b
+\begin{mdframed}[frametitle=${1:title},linecolor=red,linewidth=2pt]
+	\textit{${0:${VISUAL:input}}}
+\end{mdframed}
+endsnippet
+
+snippet link "Add link" b
+\href{${1:${VISUAL:destination}}}{${2:alt text}}
+endsnippet
+#]]]
+
+snippet ac "Acroynm normal" b
+\ac{${1:acronym}}
+$0
+endsnippet
+
+snippet acl "Acroynm expanded" b
+\acl{${1:acronym}}
+$0
+endsnippet
+
+snippet ni "Non-indented paragraph" b
+\noindent
+$0
+endsnippet
+
+
+
+snippet gln "New glossary item" b
+\newglossaryentry{${1:identifier}}
+{
+  name={${2:name}},
+  first={${3:first occurrence}},
+  sort={${4:sort value}},
+  description={${0:description}},
+}
+endsnippet
+snippet glnl "New long glossary item" b
+\longnewglossaryentry{${1:identifier}}
+{
+  name={${2:name}},
+  first={${3:first occurrence}},
+  sort={${4:sort value}},
+}
+{
+  ${0:description}
+}
+endsnippet
+
+
+
+#[[[MATH
+snippet subset "⊂"
+\subset
+endsnippet
+
+snippet lp "Long parenthesis" i
+\left(${1:${VISUAL:contents}}\right)$0
+endsnippet
+#]]]
+#[[[BEAMER
+snippet frame "New beamer frame" b
+\begin{frame}`!p snip.rv='[' if t[1] else ""`${1:options}`!p snip.rv = ']' if t[1] else ""`
+	${0:${VISUAL}}
+\end{frame}
+endsnippet
+
+snippet block "Insert a new beamer block" b
+\begin{block}{${1:${VISUAL:title}}}
+	$0
+\end{block}
+endsnippet
+
+snippet example "Insert a new example block" b
+\begin{exampleblock}{${1:${VISUAL:title}}}
+	$0
+\end{exampleblock}
+endsnippet
+
+snippet alert "Insert a new alert block" b
+\begin{alertblock}{${1:${VISUAL:title}}}
+	$0
+\end{alertblock}
+endsnippet
+
+snippet columns "Insert new columns environment" b
+\begin{columns}
+	\begin{column}{${1:width}\\textwidth}
+		${0:${VISUAL:body}}
+	\end{column}
+\end{columns}
+endsnippet
+
+snippet column "Insert new column" b
+\begin{column}{${1:width}\\textwidth}
+	${0:${VISUAL:body}}
+\end{column}
+endsnippet
+#]]]
+#[[[BIBLATEX
+
+snippet bib "Add bibliography" b
+\nocite{*}
+\bibliography{${1:bibliography}}
+\bibliographystyle{${2:style}}
+endsnippet
+
+snippet cite "Add cite" b
+\cite{$1}$0
+endsnippet
+
+snippet autocite "Add cite" b
+\autocite{$1}$0
+endsnippet
+
+snippet fullcite "Add cite" b
+\fullcite{$1}$0
+endsnippet
+
+snippet nocite "Add cite" b
+\nocite{$1}$0
+endsnippet
+
+#]]]
+#[[[TIKZ
+snippet inittikz "Initialize TikZ" b
+\usepackage{tikz}
+\usetikzlibrary{shapes.geometric, arrows,positioning}
+endsnippet
+
+snippet tikz "TikZ environment" b
+\begin{tikzpicture}`!p snip.rv='[' if t[1] else ""`${1:options}`!p snip.rv = ']' if t[1] else ""`
+	${0}
+\end{tikzpicture}
+endsnippet
+
+snippet tikzstyle "Define TikZ-Style" b
+\tikzstyle{${1}} = [${2}]
+endsnippet
+
+snippet people "TikZ people" b
+\usepackage{tikzpeople}
+endsnippet
+
+snippet node "Add node in TikZ" b
+\node`!p snip.rv='[' if t[1] else ""`${1:options}`!p snip.rv = ']' if t[1] else ""` (${2:variable}) {${3:text}};
+endsnippet
+
+snippet nodeat "Add node in position in TikZ" b
+\node`!p snip.rv='[' if t[1] else ""`${1:options}`!p snip.rv = ']' if t[1] else ""` at (${2:position}) (${3:variable}) {${4:text}};
+endsnippet
+
+snippet draw "Draw edge" b
+\draw`!p snip.rv='[' if t[1] else ""`${1:options}`!p snip.rv = ']' if t[1] else ""` (${2:from}) ${3:--} {${4:to}};
+endsnippet
+
+snippet tree "Add a basic tree in TikZ" b
+
+\tikzset{
+  level/.style={ sibling distance=20mm/#1 },
+  level distance=10mm, }
+
+\tikzset{
+  every node/.style={
+	draw, circle,
+	inner sep=0pt,
+	minimum width=15pt
+  },
+  thick }
+
+\node {${1}}
+	child { node {${2}} };
+endsnippet
+
+snippet child "Add a child node to a tree" b
+child { node {${1}} }
+endsnippet
+
+snippet arrow "TikZ-style for a basic arrow" b
+\tikzstyle{arrow} = [thick,->,>=stealth]
+endsnippet
+
+snippet flowchart "Some sane settings for flowcharts" b
+\tikzstyle{startstop} = [rectangle, rounded corners, minimum width=3cm, minimum height=1cm,text centered, draw=black, fill=red!30]
+\tikzstyle{io} = [trapezium, trapezium left angle=70, trapezium right angle=110, minimum width=3cm, minimum height=1cm, text centered, draw=black, fill=blue!30]
+\tikzstyle{process} = [rectangle, minimum width=3cm, minimum height=1cm, text centered, draw=black, fill=orange!30]
+\tikzstyle{decision} = [diamond, minimum width=3cm, minimum height=1cm, text centered, draw=black, fill=green!30]
+endsnippet
+
+snippet automata "Initialize automata" b
+\usetikzlibrary{automata}
+endsnippet
+
+snippet state "Add a new state node" b
+\node[$1`!p snip.rv=complete(t[1], ['initial','accepting'])`, state$2] (${3:variable}) {${4:text}};
+endsnippet
+
+
+
+
+
+
+
+
+#]]]
+#[[[ OTHERS
+snippet label "Add label" i
+\ref{${1:label}}$0
+endsnippet
+
+snippet ref "Add reference" i
+\ref{${1:ref}}$0
+endsnippet
+
+snippet rule "Add a horizontal rule" b
+\rule{\textwidth}{${1:1pt}}
+${0}
+endsnippet
+
+snippet cap "Add caption" b
+\caption{${1:caption}}
+endsnippet
+
+snippet itemsep "Set item seperation" i
+\setlength\itemsep{${1:1pt}}
+endsnippet
+#]]]
+
+
+
+# vim:ft=snippets:foldmethod=marker:foldlevel=0:foldmarker=[[[,]]]
