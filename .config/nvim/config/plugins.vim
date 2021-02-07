@@ -15,18 +15,27 @@ Plug 'vim-airline/vim-airline'			" for a fancier tagbar and bottom bar
 	let g:airline#extensions#tabline#formatter = 'unique_tail'
 "}}}
 "{{{ SNIPPETS
-Plug 'Shougo/neosnippet.vim'			" snippets for faster coding
-	imap <C-j>     <Plug>(neosnippet_expand_or_jump)
-	smap <C-j>     <Plug>(neosnippet_expand_or_jump)
-	xmap <C-j>     <Plug>(neosnippet_expand_target)
-	let g:neosnippet#snippets_directory='~/.config/nvim/extra/snip'
-	autocmd Bufread,Bufnewfile */snip/* setlocal filetype=neosnippet
+" Plug 'Shougo/neosnippet.vim'			" snippets for faster coding
+" 	imap <C-j>     <Plug>(neosnippet_expand_or_jump)
+" 	smap <C-j>     <Plug>(neosnippet_expand_or_jump)
+" 	xmap <C-j>     <Plug>(neosnippet_expand_target)
+" 	let g:neosnippet#snippets_directory='~/.config/nvim/extra/snip'
+" 	autocmd Bufread,Bufnewfile */snip/* setlocal filetype=neosnippet
+
+
+Plug 'SirVer/ultisnips'
+		let g:UltiSnipsSnippetDirectories=[$HOME. '/.config/nvim/extra/snip/UltiSnips']
+		let g:UltiSnipsExpandTrigger="<Tab>"
+		let g:UltiSnipsJumpForwardTrigger="<c-j>"
+		let g:UltiSnipsJumpBackwardTrigger="<c-k>"
+		let g:UltiSnipsListSnippets="<c-l>"
+
 "}}}
 "{{{ TAB-COMPLETION
 Plug 'lifepillar/vim-mucomplete'		" very simple but powerfull completion-engine
 	let g:mucomplete#enable_auto_at_startup = 1
 	let g:mucomplete#chains = {}
-	let g:mucomplete#chains.default = ['path', 'nsnp', 'keyn', 'omni']
+	let g:mucomplete#chains.default = ['ulti', 'path', 'keyn', 'omni']
 "}}}
 "{{{ LAYOUT
 Plug 'spolu/dwm.vim'				" i really like tiling wm xD
@@ -102,7 +111,6 @@ Plug 'lambdalisue/fern-bookmark.vim'		" bookmarks in filetree
 Plug 'LumaKernel/fern-mapping-fzf.vim'		" fuzzy finding files in the filetree
 	let g:fern#scheme#bookmark#store#file = '~/.config/nvim/bookmarks.json'
 "}}}
-"{{{ FILETYPE PLUGINS
 Plug 'axvr/org.vim'
 	let g:org_state_keywords = ['URGENT', 'TODO', 'WAIT', 'DOING', 'DONE', 'CANCELED']
     	let g:org_clean_folds = 1
@@ -110,9 +118,19 @@ Plug 'axvr/org.vim'
 Plug 'chrisbra/csv.vim'				" plugin for csv
 Plug 'Gavinok/vim-troff'
 Plug 'hughbien/org-vim'
-Plug 'masukomi/vim-markdown-folding'
+"{{{ LATEX
+Plug 'KeitaNakamura/tex-conceal.vim', {'for': 'tex'}
+	let g:tex_conceal_frac=1
+	let g:tex_superscripts= "[0-9a-zA-W.,:;+-<>/()=]"
+	let g:tex_subscripts= "[0-9aehijklmnoprstuvx,+-/().]"
+	set conceallevel=1
+	let g:tex_conceal="abdgm"
+
 Plug 'matze/vim-tex-fold'
     let g:tex_fold_override_foldtext = 1
+"}}}
+"{{{ MARKDOWN
+Plug 'masukomi/vim-markdown-folding'
 Plug 'plasticboy/vim-markdown'
 	let g:vim_markdown_folding_disabled = 1
 	let g:vim_markdown_math = 1
@@ -124,7 +142,6 @@ Plug 'plasticboy/vim-markdown'
 	map <M-UP> <Plug>Markdown_MoveToPreviousHeader
 
 	autocmd Bufread,Bufnewfile *.note setlocal filetype=markdown
-
 "}}}
 "{{{ MISC
 Plug 'junegunn/goyo.vim'			" work on files without distraction
@@ -132,7 +149,6 @@ Plug 'junegunn/goyo.vim'			" work on files without distraction
 	let g:goyo_linenr = 0
 
 Plug 'inkarkat/vim-SyntaxRange'
-	autocmd FileType markdown call SyntaxRange#Include('<!-- TeX -->', '<!-- -->', 'tex', 'comment')
 Plug 'terryma/vim-multiple-cursors'		" edit the different lines the same way
 Plug 'vim-scripts/speeddating.vim'		" in/decrease dates with <C-a>,<C-x>
 Plug 'ap/vim-css-color'				" highlight hexcolors in code
@@ -168,12 +184,6 @@ Plug 'vim-scripts/utl.vim'			" opening links with vim (pdf,url,jpg)
 " Plug 'jceb/vim-orgmode'
 " Plug 'itchyny/calendar.vim'
 " Plug 'qpkorr/vim-renamer'
-" Plug 'SirVer/ultisnips'
-		" let g:UltiSnipsSnippetDirectories=[$HOME. '/.config/nvim/UltiSnips']
-		" let g:UltiSnipsExpandTrigger="<Tab>"
-		" let g:UltiSnipsJumpForwardTrigger="<c-j>"
-		" let g:UltiSnipsJumpBackwardTrigger="<c-k>"
-		" let g:UltiSnipsListSnippets="<c-l>"
 
 " Plug 'Shougo/neosnippet-snippets'
 " Plug 'Gavinok/vim-minisnip', { 'branch': 'optionalautoindent' }

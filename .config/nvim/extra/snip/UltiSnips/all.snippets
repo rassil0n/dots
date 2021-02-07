@@ -2,9 +2,9 @@ global !p
 from vimsnippets import foldmarker, make_box, get_comment_format
 
 LOREM = """
-Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod \
-tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At \
-vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, \
+Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod
+tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At
+vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren,
 no sea takimata sanctus est Lorem ipsum dolor sit amet.
 """
 endglobal
@@ -44,10 +44,14 @@ snippet foldc "Insert a vim fold close marker" b
 `!p snip.rv = get_comment_format()[0]` ${2:1}`!p snip.rv = foldmarker()[1]` `!p snip.rv = get_comment_format()[2]`
 endsnippet
 
-snippet "lorem(([1-4])?[0-9])?" "Lorem Ipsum" r
-`!p snip.rv = " ".join(LOREM.split()[:int(match.group(1))]) if match.group(1) else LOREM`
+# snippet "lorem(([1-4])?[0-9])?" "Lorem Ipsum" r
+# `!p snip.rv = " ".join(LOREM.split()[:int(match.group(1))]) if match.group(1) else LOREM`
+# endsnippet
+
+snippet "lorem(\d+)?" "lorem ipsum" r
+`!p snip.rv = LOREM * int(match.group(1)) if match.group(1) else LOREM * 1`
 endsnippet
 
 snippet todo "TODO comment" bw
-`!p snip.rv=get_comment_format()[0]` ${2:TODO}: $0${3: <${4:`!v strftime('%d-%m-%y')`}${5:, `!v g:snips_author`}>} `!p snip.rv=get_comment_format()[2]`
+`!p snip.rv=get_comment_format()[0]` ${2:TODO}: $0${3: <${4:`!v strftime('%d-%m-%y')`}${5:, `echo $USER`}>} `!p snip.rv=get_comment_format()[2]`
 endsnippet

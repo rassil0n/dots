@@ -79,8 +79,20 @@ snippet pac "Package" b
 \usepackage`!p snip.rv='[' if t[1] else ""`${1:options}`!p snip.rv = ']' if t[1] else ""`{${2:package}}$0
 endsnippet
 
+snippet input "Input other tex-files" b
+\input{${1:${VISUAL}}}
+endsnippet
+
 snippet class "Documentclass" b
 \documentclass[$2]{$1`!p snip.rv=complete(t[1], ['article', 'scrartcl', 'proc', 'minimal', 'report', 'scrreprt', 'book', 'scrbook', 'amsbook', 'amsart', 'standalone', 'slides', 'memoir', 'letter', 'beamer'])`}
+endsnippet
+
+snippet newcommand "Define new command" b
+\newcommand\\${1:command}{${2:value}}
+endsnippet
+
+snippet definecolor "Define a new color" b
+\definecolor{${1:colorname}}{${2:HTML}}{${3:value}}
 endsnippet
 #]]]
 #[[[STRUCTURE
@@ -399,13 +411,18 @@ endsnippet
 
 snippet mddef "mdframed definition" b
 \begin{mdframed}[frametitle=${1:title},linecolor=red,linewidth=2pt]
-	\textit{${0:${VISUAL:input}}}
+	\begin{itshape}
+	${0:${VISUAL:input}}
+	\end{itshape}
 \end{mdframed}
 endsnippet
 
-snippet link "Add link" b
-\href{${1:${VISUAL:destination}}}{${2:alt text}}
+snippet minipage "minipage environment" b
+\begin{minipage}[${1:ctb}]{$2\textwidth}
+${0:${VISUAL}}
+\end{minipage}
 endsnippet
+
 #]]]
 
 snippet ac "Acroynm normal" b
@@ -421,6 +438,10 @@ endsnippet
 snippet ni "Non-indented paragraph" b
 \noindent
 $0
+endsnippet
+
+snippet fbox "Add fbox" b
+\fbox{${1:${VISUAL:body}}}$0
 endsnippet
 
 
@@ -449,6 +470,9 @@ endsnippet
 
 
 #[[[MATH
+snippet math "Inline math" i
+$$1$
+endsnippet
 snippet subset "⊂"
 \subset
 endsnippet
@@ -550,7 +574,7 @@ snippet nodeat "Add node in position in TikZ" b
 endsnippet
 
 snippet draw "Draw edge" b
-\draw`!p snip.rv='[' if t[1] else ""`${1:options}`!p snip.rv = ']' if t[1] else ""` (${2:from}) ${3:--} {${4:to}};
+\draw`!p snip.rv='[' if t[1] else ""`${1:options}`!p snip.rv = ']' if t[1] else ""` (${2:from}) ${3:--} (${4:to});
 endsnippet
 
 snippet tree "Add a basic tree in TikZ" b
@@ -580,10 +604,14 @@ snippet arrow "TikZ-style for a basic arrow" b
 endsnippet
 
 snippet flowchart "Some sane settings for flowcharts" b
-\tikzstyle{startstop} = [rectangle, rounded corners, minimum width=3cm, minimum height=1cm,text centered, draw=black, fill=red!30]
-\tikzstyle{io} = [trapezium, trapezium left angle=70, trapezium right angle=110, minimum width=3cm, minimum height=1cm, text centered, draw=black, fill=blue!30]
-\tikzstyle{process} = [rectangle, minimum width=3cm, minimum height=1cm, text centered, draw=black, fill=orange!30]
-\tikzstyle{decision} = [diamond, minimum width=3cm, minimum height=1cm, text centered, draw=black, fill=green!30]
+\tikzstyle{startstop} = [rectangle, rounded corners, minimum width=3cm, minimum height=1cm,text centered, draw=black, fill=red!30, align=center]
+\tikzstyle{io} = [trapezium, trapezium left angle=70, trapezium right angle=110, minimum width=3cm, minimum height=1cm, text centered, draw=black, fill=blue!30, align=center]
+\tikzstyle{process} = [rectangle, minimum width=3cm, minimum height=1cm, text centered, draw=black, fill=orange!30, align=center]
+\tikzstyle{decision} = [diamond, minimum width=3cm, minimum height=1cm, text centered, draw=black, fill=green!30, align=center]
+endsnippet
+
+snippet chart "foo" b
+\node[$1`!p snip.rv=complete(t[1], ['startstop','io','process','decision'])`$2] (${3:variable}) {${4:text}};
 endsnippet
 
 snippet automata "Initialize automata" b
@@ -591,16 +619,30 @@ snippet automata "Initialize automata" b
 endsnippet
 
 snippet state "Add a new state node" b
-\node[$1`!p snip.rv=complete(t[1], ['initial','accepting'])`, state$2] (${3:variable}) {${4:text}};
+\node[$1`!p snip.rv=complete(t[1], ['initial','accepting'])`,state$2] (${3:variable}) {${4:text}};
 endsnippet
 
+snippet edge "Add new edge to automata" b
+\draw (${1:from}) edge[->,$4] node {${3:label}} (${2:to});
+endsnippet
 
+snippet petrinet "Some sane configs for a petrinet" b
+\tikzstyle{place}=[circle,thick,draw=blue!75,fill=blue!20,minimum size=10mm]
+\tikzstyle{red place}=[place,draw=red!75,fill=red!20]
+\tikzstyle{transition}=[rectangle,thick,draw=black!75,fill=black!20,minimum size=8mm]
+endsnippet
 
+snippet place "Add new place for petrinet" b
+\node[place] (${1:variable}) [$2] {};
+endsnippet
 
+snippet transition "Add new transition for petrinet" b
+\node [transition] (${1:variable}) [$2] {}
+endsnippet
 
-
-
-
+snippet edgepetri "Add new edge for petrinet" b
+	edge[$1`!p snip.rv=complete(t[1], ['pre', 'post'])`$2] (${3:variable})
+endsnippet
 #]]]
 #[[[ OTHERS
 snippet label "Add label" i
@@ -609,6 +651,10 @@ endsnippet
 
 snippet ref "Add reference" i
 \ref{${1:ref}}$0
+endsnippet
+
+snippet link "Add link" b
+\href{${1:${VISUAL:destination}}}{${2:alt text}}
 endsnippet
 
 snippet rule "Add a horizontal rule" b
@@ -623,8 +669,16 @@ endsnippet
 snippet itemsep "Set item seperation" i
 \setlength\itemsep{${1:1pt}}
 endsnippet
-#]]]
 
+snippet footnote "Insert a footnote" b
+\footnote{${1:${VISUAL}}}$0
+
+endsnippet
+
+snippet includegraphics "includegraphics" b
+\includegraphics[width=${1:0.8}\textwidth]{${2:name.ext}}
+endsnippet
+#]]]
 
 
 # vim:ft=snippets:foldmethod=marker:foldlevel=0:foldmarker=[[[,]]]
