@@ -1,0 +1,40 @@
+\begin{titlepage}
+	%------------------------------------------------
+	%	Grey title box
+	%------------------------------------------------
+
+	\colorbox{NordBrightBlue}{
+		\parbox[t]{0.93\textwidth}{ % Outer full width box
+			\parbox[t]{0.91\textwidth}{ % Inner box for inner right text margin
+				\raggedleft % Right align the text
+				\fontsize{40pt}{80pt}\selectfont % Title font size, the first argument is the font size and the second is the line spacing, adjust depending on title length
+				\vspace{0.7cm} % Space between the start of the title and the top of the grey box
+
+				\titleone \\
+				\titletwo
+
+				\vspace{0.7cm} % Space between the end of the title and the bottom of the grey box
+			}
+		}
+	}
+
+	\vfill % Space between the title box and author information
+
+	%------------------------------------------------
+	%	Author name and information
+	%------------------------------------------------
+
+	\parbox[t]{0.93\textwidth}{
+		\raggedleft
+		\large
+		{\Large \theauthor}\\[4pt]
+		\today\\
+		\instituteone\\ [4pt]
+		% \institutetwo\\ [4pt]
+		% Hochschule Hof\\ University of Applied Science\\[4pt]
+		\texttt{<Website>}\\
+
+		\hfill\rule{0.4\linewidth}{1pt}
+	}
+
+\end{titlepage}

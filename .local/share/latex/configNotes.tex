@@ -1,0 +1,83 @@
+%{{{ PAPER
+\usepackage[a4paper, bottom=2cm, top=2cm, left=2cm, right=3cm]{geometry}
+\setlength\parindent{0cm}
+%}}}
+%{{{ LANGUAGE
+\usepackage[german]{babel}
+\usepackage{fontspec}
+\usepackage{polyglossia}
+\setdefaultlanguage{german}
+%}}}
+%{{{ FONTS
+\setmainfont{Noto Serif}
+\setsansfont{Noto Sans}
+\setmonofont{Noto Sans Mono}
+\usepackage{unicode-math}
+\usepackage{mathtools}
+\setmathfont[Scale=MatchLowercase]{Asana Math}
+\renewcommand\familydefault{\sfdefault}
+%}}}
+%{{{ TABULARX
+\usepackage{tabularx,ragged2e}
+\usepackage{booktabs}
+\newcolumntype{C}{>{\Centering\arraybackslash}X} % centered "X" column
+%}}}
+%{{{ GRAPHICS
+\usepackage{graphicx}
+\graphicspath{{img}{src}}
+%}}}
+%{{{ MISC
+\usepackage{mdframed}
+\usepackage{listings}
+\usepackage{titling}
+\usepackage{todonotes}
+%}}}
+%{{{ COLOR
+\usepackage{color}
+\usepackage{xcolor}
+%}}}
+%{{{ TIKZ
+\usepackage{tikz}
+\usetikzlibrary{shapes,arrows,positioning,backgrounds,fit}
+%}}}
+%{{{ HEADING
+\usepackage{hyperref}
+\usepackage{titlesec}
+\titleformat{\part}[frame]
+{\huge\bfseries}
+{}
+{.2cm}
+{\filcenter}
+
+\titleformat{\section}
+{\Large\bfseries}
+{\thesection}
+{.2cm}
+{}[\titlerule]
+
+\titleformat{\subsection}
+{\large\bfseries}
+{\thesubsection}
+{.5cm}
+{}[\titlerule]
+
+\titleformat{\subsubsection}
+{\it\bfseries}
+{\thesubsubsection}
+{.5cm}
+{}[\titlerule]
+%}}}
+%{{{ HEADER/FOOTER
+\usepackage{fancyhdr}
+\fancypagestyle{myHeaderFooter}{
+  \fancyhead{}
+  \fancyfoot{}
+  \lhead{\titleone\quad-\quad\titletwo}
+  \rhead{\instituteone}
+  \lfoot{\textsuperscript{\textcopyleft}\theauthor}
+  \rfoot{\thepage}
+  \renewcommand{\headrulewidth}{0.4pt}
+  \renewcommand{\footrulewidth}{0.4pt}
+}
+\pagestyle{myHeaderFooter}
+%}}}
