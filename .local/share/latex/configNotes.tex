@@ -1,3 +1,7 @@
+%{{{ COMMANDS
+\newcommand{\subtitle}[1][Notizen]{#1}
+\newcommand{\institute}[1][University Hof]{#1}
+%}}}
 %{{{ PAPER
 \usepackage[a4paper, bottom=2cm, top=2cm, left=2cm, right=3cm]{geometry}
 \setlength\parindent{0cm}
@@ -31,12 +35,14 @@
 \usepackage{listings}
 \usepackage{titling}
 \usepackage{todonotes}
+\setuptodonotes{fancyline, bordercolor=NordBlack,textcolor=NordBlack,color=NordBlue}
 %}}}
 %{{{ COLOR
 \usepackage{color}
 \usepackage{xcolor}
 %}}}
 %{{{ TIKZ
+% \usepackage{tikz-uml}
 \usepackage{tikz}
 \usetikzlibrary{shapes,arrows,positioning,backgrounds,fit}
 %}}}
@@ -72,8 +78,8 @@
 \fancypagestyle{myHeaderFooter}{
   \fancyhead{}
   \fancyfoot{}
-  \lhead{\titleone\quad-\quad\titletwo}
-  \rhead{\instituteone}
+  \lhead{\title \quad - \quad \subtitle}
+  \rhead{\institute}
   \lfoot{\textsuperscript{\textcopyleft}\theauthor}
   \rfoot{\thepage}
   \renewcommand{\headrulewidth}{0.4pt}

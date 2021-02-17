@@ -329,7 +329,7 @@ snippet "\\?b(egin)?" "begin{} / end{}" br
 endsnippet
 
 snippet "lstinput()?( (\S+))?" "import source code to display" br
-\lstinput[language=${1:`!p
+\lstinputlistings[language=${1:`!p
 snip.rv = match.group(3) if match.group(2) is not None else "language"`},name=${2:Name},caption=\lstname]{${0:${VISUAL:sourcefile}}}
 endsnippet
 
@@ -346,49 +346,6 @@ snippet abs "abstract environment" b
 \end{abstract}
 endsnippet
 
-snippet tab "tabular / array environment" b
-\begin{${1:t}${1/(t)$|(a)$|(.*)/(?1:abular)(?2:rray)/}}{${2:c}}
-$0${2/(?<=.)(c|l|r)|./(?1: & )/g}
-\end{$1${1/(t)$|(a)$|(.*)/(?1:abular)(?2:rray)/}}
-endsnippet
-
-snippet tabx "tabularx" b
-\begin{tabularx}{${1:\textwidth}}{${2:c}}
-\toprule
-$0${2/(?<=.)(c|l|r|X|C)|./(?1: & )/g}
-\bottomrule
-\end{tabularx}
-endsnippet
-
-pre_expand "create_table(snip)"
-snippet "gentbl(\d+)x(\d+) (\w+)" "Generate table of *width* by *height*" r
-endsnippet
-
-pre_expand "add_row(snip)"
-snippet "tr(\d+)" "Add table row of dimension ..." r
-endsnippet
-
-snippet table "Table environment" b
-\begin{table}[${1:htpb}]
-	\centering
-	$0
-	\label{tab:${3:label}}
-	\caption{${2:caption}}
-\end{table}
-endsnippet
-
-snippet midrule "Add cmidrule to tabular" b
-\cmidrule(){${1:1}-${2:2}}
-endsnippet
-
-snippet fig "Figure environment" b
-\begin{figure}[${2:htpb}]
-	\centering
-	\includegraphics[width=${3:0.8}\textwidth]{${4:name.ext}}
-	\caption{${4/(\w+)\.\w+/\u$1/}$0}
-	\label{fig:${4/(\w+)\.\w+/$1/}}
-\end{figure}
-endsnippet
 
 snippet left "Flush left environment" b
 \begin{flushleft}
@@ -442,51 +399,54 @@ ${0:${VISUAL}}
 endsnippet
 
 #]]]
-
-snippet ac "Acroynm normal" b
-\ac{${1:acronym}}
-$0
+#[[[ TABLES
+snippet tab "tabular / array environment" b
+\begin{${1:t}${1/(t)$|(a)$|(.*)/(?1:abular)(?2:rray)/}}{${2:c}}
+$0${2/(?<=.)(c|l|r)|./(?1: & )/g}
+\end{$1${1/(t)$|(a)$|(.*)/(?1:abular)(?2:rray)/}}
 endsnippet
 
-snippet acl "Acroynm expanded" b
-\acl{${1:acronym}}
-$0
+snippet tabx "tabularx" b
+\begin{tabularx}{${1:\textwidth}}{${2:c}}
+\toprule
+$0${2/(?<=.)(c|l|r|X|C)|./(?1: & )/g}
+\bottomrule
+\end{tabularx}
 endsnippet
 
-snippet ni "Non-indented paragraph" b
-\noindent
-$0
+pre_expand "create_table(snip)"
+snippet "gentbl(\d+)x(\d+) (\w+)" "Generate table of *width* by *height*" r
 endsnippet
 
-snippet fbox "Add fbox" b
-\fbox{${1:${VISUAL:body}}}$0
+pre_expand "add_row(snip)"
+snippet "tr(\d+)" "Add table row of dimension ..." r
 endsnippet
 
-
-
-snippet gln "New glossary item" b
-\newglossaryentry{${1:identifier}}
-{
-  name={${2:name}},
-  first={${3:first occurrence}},
-  sort={${4:sort value}},
-  description={${0:description}},
-}
-endsnippet
-snippet glnl "New long glossary item" b
-\longnewglossaryentry{${1:identifier}}
-{
-  name={${2:name}},
-  first={${3:first occurrence}},
-  sort={${4:sort value}},
-}
-{
-  ${0:description}
-}
+snippet table "Table environment" b
+\begin{table}[${1:htpb}]
+	\centering
+	$0
+	\label{tab:${3:label}}
+	\caption{${2:caption}}
+\end{table}
 endsnippet
 
+snippet midrule "Add cmidrule to tabular" b
+\cmidrule(){${1:1}-${2:2}}
+endsnippet
 
+snippet multicol "Add multicolumns" b
+\multicolumn{${1:cols}}{${2:format}}{${3:body}}
+endsnippet
 
+snippet rowcolors "Change row colors" b
+\rowcolors{${1:2}}{$2}{$3}
+endsnippet
+
+snippet rowcolor "Change one rowcolor" b
+\rowcolor{${1:color}}
+endsnippet
+#]]]
 #[[[MATH
 snippet math "Inline math" i
 $$1$
@@ -536,6 +496,10 @@ snippet column "Insert new column" b
 \begin{column}{${1:width}\\textwidth}
 	${0:${VISUAL:body}}
 \end{column}
+endsnippet
+
+snippet onslide "Enter onslide" i
+\onslide<${1:+-}>
 endsnippet
 #]]]
 #[[[BIBLATEX
@@ -673,6 +637,10 @@ snippet edgepetri "Add new edge for petrinet" b
 endsnippet
 #]]]
 #[[[ OTHERS
+snippet fbox "Add fbox" b
+\fbox{${1:${VISUAL:body}}}$0
+endsnippet
+
 snippet label "Add label" i
 \ref{${1:label}}$0
 endsnippet
@@ -703,7 +671,7 @@ snippet footnote "Insert a footnote" b
 
 endsnippet
 
-snippet includegraphics "includegraphics" b
+snippet includegraphics "includegraphics" i
 \includegraphics[width=${1:0.8}\textwidth]{${2:name.ext}}
 endsnippet
 
@@ -715,7 +683,49 @@ snippet lstdefinelanguage "Define a new language" b
 	}
 endsnippet
 
+snippet todo "Add a todo note" i
+\todo`!p snip.rv='[' if t[1] else ""`${1:inline}`!p snip.rv = ']' if t[1] else ""` {${2:todo}}
+endsnippet
 
+
+#]]]
+
+#[[[ UNDEFINED
+snippet ac "Acroynm normal" b
+\ac{${1:acronym}}
+$0
+endsnippet
+
+snippet acl "Acroynm expanded" b
+\acl{${1:acronym}}
+$0
+endsnippet
+
+snippet ni "Non-indented paragraph" b
+\noindent
+$0
+endsnippet
+
+snippet gln "New glossary item" b
+\newglossaryentry{${1:identifier}}
+{
+  name={${2:name}},
+  first={${3:first occurrence}},
+  sort={${4:sort value}},
+  description={${0:description}},
+}
+endsnippet
+snippet glnl "New long glossary item" b
+\longnewglossaryentry{${1:identifier}}
+{
+  name={${2:name}},
+  first={${3:first occurrence}},
+  sort={${4:sort value}},
+}
+{
+  ${0:description}
+}
+endsnippet
 #]]]
 
 

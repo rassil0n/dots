@@ -52,6 +52,6 @@ snippet "lorem(\d+)?" "lorem ipsum" r
 `!p snip.rv = LOREM * int(match.group(1)) if match.group(1) else LOREM * 1`
 endsnippet
 
-snippet todo "TODO comment" bw
-`!p snip.rv=get_comment_format()[0]` ${2:TODO}: $0${3: <${4:`!v strftime('%d-%m-%y')`}${5:, `echo $USER`}>} `!p snip.rv=get_comment_format()[2]`
-endsnippet
+# snippet todo "TODO comment" bw
+# `!p snip.rv=get_comment_format()[0]` ${2:TODO}: $0${3: <${4:`!v strftime('%d-%m-%y')`}${5:, `echo $USER`}>} `!p snip.rv=get_comment_format()[2]`
+# endsnippet
