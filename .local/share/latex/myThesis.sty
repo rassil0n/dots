@@ -1,0 +1,217 @@
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{myThesis}
+
+% FONTS
+\RequirePackage{fontspec}
+\setmainfont{Noto Serif}
+\setsansfont{Noto Sans}
+\setmonofont{Noto Sans Mono}
+\renewcommand\familydefault{\sfdefault}
+
+
+% COLORS
+\RequirePackage{color}
+\RequirePackage{xcolor}
+
+\definecolor{NordBlack}{HTML}{2E3440}           % nord0
+\definecolor{NordMediumBlack}{HTML}{3B4252}     % nord1
+\definecolor{NordBrightBlack}{HTML}{434C5e}     % nord2
+\definecolor{NordBrightestBlack}{HTML}{4C566A}  % nord3
+
+% Snow Storm
+\definecolor{NordWhite}{HTML}{D8DEE9}           % nord4
+\definecolor{NordBrightWhite}{HTML}{E5E9F0}     % nord5
+\definecolor{NordBrightestWhite}{HTML}{ECEFF4}  % nord6
+
+% Frost
+\definecolor{NordCyan}{HTML}{8FBCBB}            % nord7
+\definecolor{NordBrightCyan}{HTML}{88C0D0}      % nord8
+\definecolor{NordBlue}{HTML}{81A1C1}            % nord9
+\definecolor{NordBrightBlue}{HTML}{5E81AC}      % nord10
+
+% Aurora
+\definecolor{NordRed}{HTML}{BF616A}             % nord11
+\definecolor{NordOrange}{HTML}{D08770}          % nord12
+\definecolor{NordYellow}{HTML}{EBCB8B}          % nord13
+\definecolor{NordGreen}{HTML}{A3BE8C}           % nord14
+\definecolor{NordMagenta}{HTML}{B48EAD}         % nord15
+
+\renewcommand{\chaptermark}[1]{%
+    \markboth{%
+        % \ctfontfootertext
+        % use \@chapapp instead of \chaptername to avoid
+        % 'Chapter A Appendix ...', thanks to @farbverlust (issue #47)
+        {\color{orange}\textbf{\@chapapp\ \thechapter}}%
+        \quad%
+        \protect\begin{minipage}[t]{.65\textwidth}%
+            #1%
+        \protect\end{minipage}%
+    }{}%
+}
+
+\newcommand{\ctfooterline}{%
+    \color{NordGreen}\rule[-90pt]{1.25pt}{100pt}%
+}
+
+\renewcommand*{\partpagestyle}{empty}
+\renewcommand*{\raggedpart}{\raggedleft}
+\renewcommand*\partheadmidvskip{\par\vspace*{3em}}
+\renewcommand*{\partformat}{%
+    \usekomafont{part}%
+    % \thesispartlabelfont%
+    \partname\ \thepart\quad%
+    {\color{NordOrange}\hspace*{-200pt}\rule[0pt]{600pt}{2pt}}%
+}
+
+\renewcommand*\chapterheadstartvskip{\vspace*{-8.75em}}
+\renewcommand*\chapterheadendvskip{\vspace*{2.5\baselineskip}}
+\renewcommand*{\chapterformat}{%
+    \ctchapternumber{\thechapter}%
+}
+\renewcommand{\chapterlinesformat}[3]{%
+    \ctchaptertitle{#3}%
+    #2%
+}
+%\renewcommand{\chapterlineswithprefixformat}[3]{%
+%    \ctchaptertitle{\@chapapp\ \thechapter: #3}%
+%    #2%
+%}
+\newcommand{\ctchapternumber}[1]{%
+    \usekomafont{chapter}%
+    \begin{minipage}[t]{0.3\textwidth}%
+        \raggedleft{%
+            {\color{NordBlue}\rule[-5pt]{2pt}{5cm}}%
+            \quad%
+            {\color{NordBlue}\fontsize{60}{60}\selectfont#1}%
+        }%
+    \end{minipage}%
+}
+\newcommand{\ctchaptertitle}[1]{%
+    \usekomafont{chapter}%
+    \begin{minipage}[t]{0.7\textwidth}%
+        \vspace*{5.85em}%
+        \raggedright%
+        #1%
+    \end{minipage}%
+}
+
+    \renewcommand*{\sectionformat}{%
+        \usekomafont{section}%
+        \makebox[0pt][r]{\color{blue}\thesection\hspace*{10pt}}%
+    }
+
+
+\newcommand{\hugequote}{%
+	{\fontsize{75}{80}\selectfont%
+	\hspace*{-.475em}\color{gray}%
+	\textit{\glqq}%
+	\vskip -.26em}%
+}
+\newcommand{\cleanchapterquote}[3]{%
+	\begin{minipage}{.865\textwidth}%
+		\begin{flushright}
+			\begin{minipage}{.65\textwidth}%
+				\begin{flushleft}
+					{\hugequote}\textit{#1}
+				\end{flushleft}
+	    		\begin{flushright}
+    				--- \textbf{#2} \\
+    				#3
+		    	\end{flushright}
+		    \end{minipage}%
+		\end{flushright}
+	\end{minipage}%
+	\bigskip
+}
+
+\KOMAoption{headinclude}{false}     % include header in body?
+\KOMAoption{footinclude}{false}      % include footer in body?
+\KOMAoption{footlines}{2.1}         % number of foot lines
+\KOMAoption{mpinclude}{false}       % include marginpar in body?
+\KOMAoption{BCOR}{25mm}             % binding correction
+\KOMAoption{DIV}{12}                % number of page divs (divider)
+
+% FOOTER
+\RequirePackage[automark]{scrlayer-scrpage}
+\automark[section]{chapter}         % automatically marks sections as rightmark
+                                    % and chapters as leftmark
+\setlength{\footheight}{120pt}      % avoids scrlayer-scrpage warning:
+                                    % footheight to low warning
+\setlength{\footskip}{185pt}        % BAD HACK that moves the foot downwards
+% \KOMAoption{footwidth}{foot:53pt}   % BAD HACK that moves the foot towards
+                                    % the outer border
+% \setkomafont{pagefoot}{\ctfontfootertext}           % font for footer
+% \setkomafont{pagenumber}{\ctfontfooterpagenumber}   % font for page numbers
+
+%% Redefinition of the chaptermark (used for footer mark on even (left) pages)
+\renewcommand{\chaptermark}[1]{%
+    \markboth{%
+        % \ctfontfootertext
+        % use \@chapapp instead of \chaptername to avoid
+        % 'Chapter A Appendix ...', thanks to @farbverlust (issue #47)
+        {\color{NordRed}\textbf{\@chapapp\ \thechapter}}%
+        \quad%
+        \protect\begin{minipage}[t]{.65\textwidth}%
+            #1%
+        \protect\end{minipage}%
+    }{}%
+}
+
+%% Redefinition of the sectionmark (used for footer mark on odd (right) pages)
+\newlength{\lensectionnumber}
+\renewcommand{\sectionmark}[1]{%
+    \markright{%
+        % \ctfontfootertext
+        \setlength{\lensectionnumber}{0em}
+        \settowidth{\lensectionnumber}{\textbf{\thesection}\quad}
+        \protect\begin{minipage}[t]{.72\textwidth}%
+            {\ }% bad hack to prevent a wrong baseline for the minipage
+            \protect\raggedleft%
+            \hangindent=\lensectionnumber%
+            {\color{NordRed}\textbf{\thesection}}%
+            \quad%
+            #1%
+        \protect\end{minipage}%
+    }%
+}
+
+\newcommand{\ctfooterrightpagenumber}{%
+    \ctfooterline%
+    \hspace*{10pt}%
+    \begin{minipage}[b]{1.5cm}%
+        \pagemark\ %
+    \end{minipage}%
+}
+
+\newcommand{\ctfooterleftpagenumber}{%
+    \begin{minipage}[b]{1.5cm}%
+        \raggedleft\pagemark%
+    \end{minipage}%
+    \hspace*{10pt}%
+    \ctfooterline%
+}
+
+\lehead{}
+\cehead{}
+\rehead{}
+\lohead{}
+\cohead{}
+\rohead{}
+\lefoot[%   > plain
+    \ctfooterleftpagenumber%
+]{%         > srcheadings
+    \ctfooterleftpagenumber%
+    \hspace*{0.75cm}%
+    \headmark%
+}
+\cefoot{}
+\refoot{}
+\lofoot{}
+\cofoot{}
+\rofoot[%   > plain
+    \ctfooterrightpagenumber%
+]{%         > srcheadings
+    \headmark%
+    \hspace*{0.75cm}%
+    \ctfooterrightpagenumber%
+}

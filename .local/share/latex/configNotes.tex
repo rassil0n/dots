@@ -1,18 +1,18 @@
 %{{{ COMMANDS
-\newcommand{\subtitle}[1][Notizen]{#1}
+% \newcommand{\subtitle}[1][Notizen]{#1}
 \newcommand{\institute}[1][University Hof]{#1}
 %}}}
 %{{{ PAPER
-\usepackage[a4paper, bottom=2cm, top=2cm, left=2cm, right=3cm]{geometry}
+\usepackage[a4paper, bottom=2.5cm, top=2.5cm, left=2cm, right=2cm]{geometry}
 \setlength\parindent{0cm}
 %}}}
 %{{{ LANGUAGE
 \usepackage[german]{babel}
-\usepackage{fontspec}
 \usepackage{polyglossia}
 \setdefaultlanguage{german}
 %}}}
 %{{{ FONTS
+\usepackage{fontspec}
 \setmainfont{Noto Serif}
 \setsansfont{Noto Sans}
 \setmonofont{Noto Sans Mono}
@@ -34,6 +34,8 @@
 \usepackage{mdframed}
 \usepackage{listings}
 \usepackage{titling}
+%}}}
+%{{{ TODOS
 \usepackage{todonotes}
 \setuptodonotes{fancyline, bordercolor=NordBlack,textcolor=NordBlack,color=NordBlue}
 %}}}
@@ -49,17 +51,19 @@
 %{{{ HEADING
 \usepackage{hyperref}
 \usepackage{titlesec}
-\titleformat{\part}[frame]
-{\huge\bfseries}
-{}
-{.2cm}
-{\filcenter}
+\usepackage{ulem}
+
+\titleformat{\part}
+{\huge\bfseries\color{NordBrightBlue}}
+{\titlerule}
+{0cm}
+{\filleft}[{\titlerule[2pt]}]
 
 \titleformat{\section}
 {\Large\bfseries}
 {\thesection}
 {.2cm}
-{}[\titlerule]
+{}
 
 \titleformat{\subsection}
 {\large\bfseries}
@@ -68,7 +72,7 @@
 {}[\titlerule]
 
 \titleformat{\subsubsection}
-{\it\bfseries}
+{\itshape\bfseries}
 {\thesubsubsection}
 {.5cm}
 {}[\titlerule]
@@ -79,7 +83,7 @@
   \fancyhead{}
   \fancyfoot{}
   \lhead{\title \quad - \quad \subtitle}
-  \rhead{\institute}
+  \rhead{\leftmark}
   \lfoot{\textsuperscript{\textcopyleft}\theauthor}
   \rfoot{\thepage}
   \renewcommand{\headrulewidth}{0.4pt}
