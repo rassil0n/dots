@@ -329,7 +329,7 @@ snippet "\\?b(egin)?" "begin{} / end{}" br
 endsnippet
 
 snippet "lstinput()?( (\S+))?" "import source code to display" br
-\lstinputlistings[language=${1:`!p
+\lstinputlisting[language=${1:`!p
 snip.rv = match.group(3) if match.group(2) is not None else "language"`},name=${2:Name},caption=\lstname]{${0:${VISUAL:sourcefile}}}
 endsnippet
 
@@ -451,13 +451,201 @@ endsnippet
 snippet math "Inline math" i
 $$1$
 endsnippet
-snippet subset "⊂"
-\subset
+
+snippet display "Displaystyle" i
+\displaystyle
+endsnippet
+
+snippet pow "Power" i
+^{$1}
+endsnippet
+
+snippet idx "Index" i
+_{$1}
+endsnippet
+
+snippet root "√" i
+\sqrt`!p snip.rv = '[' if t[1] else ""`$1`!p snip.rv = "]" if t[1] else ""`{$2}
 endsnippet
 
 snippet lp "Long parenthesis" i
 \left(${1:${VISUAL:contents}}\right)$0
 endsnippet
+
+snippet inf "∞" i
+\infty
+endsnippet
+#[[[ GREEK LETTERS
+snippet alpha "α" i
+\alpha
+endsnippet
+snippet Alpha "Α" i
+\Alpha
+endsnippet
+
+snippet beta "β" i
+\beta
+endsnippet
+snippet Beta "Β" i
+\Beta
+endsnippet
+
+snippet gamma "Ɣ" i
+\gamma
+endsnippet
+snippet Gamma "Γ" i
+\Gamma
+endsnippet
+
+snippet pi "π" i
+\pi
+endsnippet
+snippet Pi "Π" i
+\Pi
+endsnippet
+
+snippet phi "ϕ" i
+\phi
+endsnippet
+snippet Phi "Φ" i
+\Phi
+endsnippet
+
+snippet mu "μ" i
+\mu
+endsnippet
+snippet Mu "Μ" i
+\Mu
+endsnippet
+
+snippet theta "θ" i
+\theta
+endsnippet
+snippet Theta "Θ" i
+\Theta
+endsnippet
+#]]]
+#[[[ TRIGOMETRY
+snippet cosines "Cosines" i
+\cos
+endsnippet
+
+snippet tangents "Tangents" b
+\tan
+endsnippet
+
+snippet sinus "∿" i
+\sin
+endsnippet
+#]]]
+#[[[ FRACTION/BINOMIAL
+snippet frac "Fraction" i
+\frac{$1}{$2}
+endsnippet
+
+snippet sfrac "Fraction" i
+\sfrac{$1}{$2}
+endsnippet
+
+snippet binom "Binomial" i
+\binom{$1}{$2}
+endsnippet
+#]]]
+#[[[ SUMS/PRODS/INTS/LIMITS
+snippet sum "Σ" i
+\sum_{$1}^{$2}
+endsnippet
+
+snippet prod "∏" i
+\prod{$1}^{$2}
+endsnippet
+
+snippet int "∫" i
+\sum_{$1}^{$2}
+endsnippet
+
+snippet limes "Limits" i
+\lim\limits_{$1}
+endsnippet
+#]]]
+#[[[ ACCENTS
+snippet ol "̅Overline" i
+\overline{${1:${VISUAL}}}
+endsnippet
+
+snippet overhat "^" i
+\hat{${1:${VISUAL}}}
+endsnippet
+
+snippet overgrave "॓`" i
+\grave{${1:${VISUAL}}}
+endsnippet
+
+snippet overdot "॓·" i
+\dot{${1:${VISUAL}}}
+endsnippet
+
+snippet overra "॓⃗→" i
+\overrightarrow{${1:${VISUAL}}}
+endsnippet
+
+snippet overla "॓⃗←" i
+\overleftarrow{${1:${VISUAL}}}
+endsnippet
+
+snippet overtilde "॓⃗~" i
+\tilde{${1:${VISUAL}}}
+endsnippet
+#]]]
+#[[[ PLUS/MINUS
+snippet pm "±" i
+\pm
+endsnippet
+snippet mp "!±" i
+\mp
+endsnippet
+#]]]
+#[[[RELATIONS
+snippet less "<" i
+<
+endsnippet
+
+snippet leq "≤" i
+\leq
+endsnippet
+
+snippet less+ "≪" i
+\ll
+endsnippet
+
+snippet subset "⊂" i
+\subset
+endsnippet
+
+snippet subseteq "⊆" i
+\subseteq
+endsnippet
+
+snippet nsubset "⊈" i
+\nsubseteq
+endsnippet
+
+snippet sqsubset "⊏" i
+\sqsubset
+endsnippet
+
+snippet sqsubseteq "⊑" i
+\sqsubseteq
+endsnippet
+
+snippet preceq "≺" i
+\preceq
+endsnippet
+
+snippet therefore "∴" i
+\therefore
+endsnippet
+#]]]
 #]]]
 #[[[BEAMER
 snippet frame "New beamer frame" b
