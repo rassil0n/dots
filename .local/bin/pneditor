@@ -1,0 +1,3 @@
+#!/bin/sh
+
+$HOME/.local/opt/java8/bin/java -jar $HOME/.local/opt/pneditor-0.71.jar
