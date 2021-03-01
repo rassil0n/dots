@@ -118,6 +118,12 @@ Plug 'axvr/org.vim'
 Plug 'chrisbra/csv.vim'				" plugin for csv
 Plug 'Gavinok/vim-troff'
 Plug 'hughbien/org-vim'
+
+"{{{ PYTHON
+Plug 'davidhalter/jedi-vim'
+	autocmd FileType python setlocal completeopt-=preview
+let g:jedi#use_splits_not_buffers = "left"
+"}}}
 "{{{ LATEX
 Plug 'KeitaNakamura/tex-conceal.vim', {'for': 'tex'}
 	let g:tex_conceal_frac=1
