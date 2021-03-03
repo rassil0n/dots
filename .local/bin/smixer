@@ -1,17 +1,45 @@
 #!/bin/sh
-	command=$1
-	vol=$2
-	case $command in
-		# for cmus
-		play)	cmus-remote -p ;;
-		stop)	cmus-remote -s ;;
-		next)	cmus-remote -n ;;
-		prev)	cmus-remote -r ;;
-		pause)	cmus-remote -u ;;
-		# for amixer
-		mute)	amixer set Master -q toggle ;;
-		set)	amixer set Master -q $vol% ;;
-		up)	amixer set Master -q $vol%+ ;;
-		down)	amixer set Master -q $vol%- ;;
-		*)	echo "Wrong input" ;;
-	esac
+command=$1
+vol=$2
+
+case $command in
+	mute|mic|set|up|down)
+		case $command in
+			mute)	amixer set Master -q toggle ;;
+			mic)	amixer set Capture -q toggle ;;
+			set)	amixer set Master -q $vol% ;;
+			up)		amixer set Master -q $vol%+ ;;
+			down)	amixer set Master -q $vol%- ;;
+		esac;;
+
+	play|stop|next|prev|pause)
+		case $MUSIC in
+			*ncmpcpp)
+				case $command in
+					play)	mpc play ;;
+					stop)	mpc stop ;;
+					next)	mpc next ;;
+					prev)	mpc prev ;;
+					pause)	mpc toggle ;;
+				esac ;;
+
+			*cmus)
+				case $command in
+					play)	cmus-remote -p ;;
+					stop)	cmus-remote -s ;;
+					next)	cmus-remote -n ;;
+					prev)	cmus-remote -r ;;
+					pause)	cmus-remote -u ;;
+				esac ;;
+
+			*mocp)
+				case $command in
+					play)	mocp -p ;;
+					stop)	mocp -s ;;
+					next)	mocp -f ;;
+					prev)	mocp -r ;;
+					pause)	mocp -G ;;
+				esac ;;
+		esac;;
+	*) echo "Wrong input"
+esac
