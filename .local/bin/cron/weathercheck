@@ -1,0 +1,4 @@
+#!/bin/sh
+
+weatherreport="${XDG_DATA_HOME:-$HOME/.local/share}/weatherreport"
+curl -sf "wttr.in/$LOCATION" > "$weatherreport" || exit 1

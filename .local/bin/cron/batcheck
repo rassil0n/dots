@@ -1,0 +1,12 @@
+#!/bin/sh
+
+[ "$(cat /sys/class/power_supply/BAT0/status)" = "Charging" ] && exit
+
+cap=$(cat /sys/class/power_supply/BAT0/capacity)
+
+export DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/$(id -u $USER)/bus &&
+if [ $cap -lt 10 ];then
+	notify-send -u critical "Battery critically low."
+elif [ $cap -lt 25 ];then
+	notify-send "Battery low."
+fi

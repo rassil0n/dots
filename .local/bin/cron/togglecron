@@ -1,0 +1,22 @@
+#!/bin/sh
+
+CRONFILE=$HOME/.config/cronjobs
+
+
+case $1 in
+	-d)
+		crontab -l > $CRONFILE
+		crontab -r
+		notify-send "🕓 Cronjobs saved and disabled."
+		;;
+	-e)
+		if [ ! -f $CRONFILE ];then
+			notify-send -u critical "❗No cronfile found"
+		else
+			crontab - < $CRONFILE
+			notify-send  "🕓 Cronjobs re-enabled."
+		fi
+		;;
+	*)
+		echo "Wrong option!"
+esac
