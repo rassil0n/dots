@@ -5,6 +5,4 @@ rootfree=$(df -h | awk '$6=="/"{print $4}')
 homefree=$(df -h | awk '$6=="/home"{print $4}')
 
 # create output
-echo  "[ 💾${rootfree} 🏠${homefree} ]"
-# echo  "[ 💾${rootfree} ]"
-# echo  "[ 🏠${homefree} ]"
+printf "[ 💾%s 🏠%s ]" $rootfree $homefree

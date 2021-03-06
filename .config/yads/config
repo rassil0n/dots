@@ -2,7 +2,7 @@
 
 # what modules to display
 # MODULES="mpd pomodoro hides apt mounts volume disk ram cpu battery internet date"
-MODULES="mpd pomodoro hides apt mounts volume disk ram cpu battery internet date"
+MODULES="mpd calcurse hides apt rss mounts volume disk ram cpu internet kbselect battery date"
 
 # update intervall
 INTERVALL="1.0"

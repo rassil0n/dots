@@ -12,4 +12,4 @@ total=$((a+b+c+idle))
 cpu=$((100*( (total-prevtotal) - (idle-previdle) ) / (total-prevtotal) ))
 
 # create output
-echo "[ 💽${cpu}% 🌡${therm_status}°C ]"
+printf "[ 💽%2s%% 🌡%s°C ]\\n" $cpu $therm_status

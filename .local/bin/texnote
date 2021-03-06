@@ -1,0 +1,125 @@
+#!/bin/sh
+
+# set -x
+NOTESDIR=$HOME/.local/share/notes
+BACKUPDIR=$HOME/mnt/onedrive/Notes
+
+args(){
+	action=$1
+	shift "$(($# ? 1 : 0))"
+	file="$@"
+}
+
+getNotes(){
+	cd $NOTESDIR
+	chosen=$(find -maxdepth 1 -type d | sed 's/\.\///g;/^\.$/d' | fzf --layout reverse --info inline --border)
+	fullNote=$(readlink -f "${chosen}")
+}
+
+blankoNote(){
+cat >> $1 << EOF
+%{{{ META
+\documentclass[table]{article}
+\newcommand{\configfolder}{~/.local/share/latex}
+
+\input{\configfolder/configNotes.tex}
+\input{\configfolder/nordcolors.tex}
+\input{\configfolder/listing.tex}
+
+\author{Florian Vogl}
+\renewcommand\title{Title}
+%}}}
+
+\begin{document}
+
+\input{\configfolder/SimpleTitlepage.tex}
+\thispagestyle{empty}
+\tableofcontents
+\listoffigures
+\newpage
+
+
+\end{document}
+EOF
+}
+
+blankoMake(){
+cat >> $1 << EOF
+pdf:
+	xelatex main.tex
+	xelatex main.tex
+
+read:
+	setsid zathura main.pdf &
+EOF
+}
+
+newNote(){
+	echo -n "Please enter name for the note: "
+	read notename
+	[ -d "${notename}" ] && echo "Note is already existing..." && exit
+
+	mkdir -p $NOTESDIR/$notename/src &&
+		mkdir -p $NOTESDIR/$notename/img &&
+		cd $NOTESDIR/$notename
+
+	blankoNote $NOTESDIR/$notename/main.tex
+	blankoMake $NOTESDIR/$notename/Makefile
+	nvim -c "cd $NOTESDIR/$notename" main.tex
+
+}
+
+backupNote(){
+	getNotes
+	rsync -ruP "${fullNote}" $BACKUPDIR
+	onedrive --synchronize
+}
+
+editNote(){
+	getNotes
+	cd "${fullNote}" && nvim main.tex
+}
+
+exportNote(){
+	getNotes
+	cp -r "${fullNote}" "${fullNote}-exp"
+	configs=$(grep newcommand{.config "${fullNote}/main.tex" | sed 's/\\newcommand{\\configfolder}{//;s/}//')
+	sed -i '/\\newcommand{\\configfolder}/d;s/\\input{\\configfolder\//\\input{/g' "${fullNote}-exp/main.tex"
+	mv "${fullNote}-exp" "/home/flo/temp/${chosen}"
+	echo $configs
+	echo $(readlink -f $configs)
+	# cp "${configs}/*" "/home/flo/temp/${chosen}"
+}
+
+main(){
+	args $@
+
+	cd $NOTESDIR
+
+	case $action in
+		b|backup|-b)
+			backupNote ;;
+
+		e|edit|-e)
+			editNote "${file}";;
+
+		f|find|-f)
+			findInNotes ;;
+
+		l|list|-l)
+			listNotes ;;
+
+		n|new|-n)
+			newNote ;;
+
+		s|show|-s)
+			showNote "${file}";;
+
+		x|export|-x)
+			exportNote ;;
+		*)
+			printHelp ;;
+	esac
+}
+
+main "$@"

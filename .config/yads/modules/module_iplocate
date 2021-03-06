@@ -1,0 +1,7 @@
+#!/bin/sh
+set -x
+
+land="$(curl ifconfig.co/country 2>/dev/null)" || exit
+flag=$(grep "flag: " "${XDG_DATA_HOME:-$HOME/.local/share}/emoji" | grep $land | sed "s/flag: //;s/;.*//;s/[a-zA-Z].*//")
+
+printf "[%s]" $flag

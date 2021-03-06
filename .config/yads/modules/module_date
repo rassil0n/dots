@@ -4,4 +4,4 @@
 time=$(date +%H:%M)
 
 # create output
-echo "[ ${time} ]"
+printf "[ %s ]" $time

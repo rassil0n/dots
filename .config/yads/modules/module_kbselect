@@ -1,0 +1,5 @@
+#!/bin/sh
+kb="$(setxkbmap -query | grep -oP 'layout:\s*\K\w+')" || exit 1
+icon="⌨"
+
+printf "[%s%s]" $icon $kb

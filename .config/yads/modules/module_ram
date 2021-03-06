@@ -1,10 +1,11 @@
 #!/bin/sh
 
 # get memory/swap
-mem=$(free -h | awk '$1~/Mem/{print $3}')
+mem=$(free -h | awk '$1~/Speicher/{print $3}'| tr -d i)
 swap=$(free -h | awk '$1~/Swap/{print $3}')
 
 # create output
 if [ "${swap}" = "0" ] || [ "${swap}" = "0B" ] || [ "${swap}" = "0,0Ki" ]; then
-        echo "[ 🧠${mem} ]" | tr -d i
-else 	echo "[ ${mem}"\|\|"${swap} ]" |tr -d i; fi
+		printf "[ 🧠%s ]" $mem
+        # echo "[ 🧠${mem} ]" | tr -d i
+else printf "[ 🧠%s || %s ]" $mem $swap; fi

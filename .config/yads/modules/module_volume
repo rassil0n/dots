@@ -10,4 +10,5 @@ getMicState=$(amixer get Capture state | awk '$1=="Front"&&$2=="Left:"{print $6}
 # create output
 if [ "$getMicState" = "[on]" ]; then micon=" 🎤"; else micon="";fi
 if [ "$getState" = "[off]" ]; then icon="🔇"; else icon="🔊";fi
-echo [ "${icon}" ${getVolume}${micon} ]
+
+printf "[ %s %s %s]" $icon $getVolume $micon

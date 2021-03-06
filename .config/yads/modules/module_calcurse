@@ -1,0 +1,7 @@
+#!/bin/sh
+event="$(calcurse -D $HOME/.config/calcurse -n | sed 1d | \
+		sed -E "s_^ *\[(.*):(.*)\] ([^\t]*)\t?.*_\1h:\2m -> \3_")"
+	[ "[]" = "$event" ] && event=""
+icon="📅"
+
+[ "$event" = "" ] || printf "[ %s %s ]" "$icon" "$event"
