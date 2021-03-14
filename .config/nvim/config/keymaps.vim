@@ -49,6 +49,20 @@
 	inoremap <space><tab> <Esc>/<++><Enter>ca<
 	vnoremap <space><tab> <Esc>/<++><Enter>ca<
 "}}}
+"{{{ BRACKETS
+	inoremap {<CR> {<CR>}<c-o><s-o>
+	inoremap (<CR> (<CR>)<c-o><s-o>
+	inoremap [<CR> [<CR>]<c-o><s-o>
+	inoremap        (  ()<Left>
+	inoremap        {  {}<Left>
+	inoremap        [  []<Left>
+"}}}
+"{{{ AUTO SKIP
+	inoremap <expr> ) strpart(getline('.'), col('.')-1, 1) == ")" ? "\<Right>" : ")"
+	inoremap <expr> } strpart(getline('.'), col('.')-1, 1) == "}" ? "\<Right>" : "}"
+	inoremap <expr> ] strpart(getline('.'), col('.')-1, 1) == "]" ? "\<Right>" : "]"
+	inoremap <expr> ' strpart(getline('.'), col('.')-1, 1) == "\'" ? "\<Right>" : "\'\'\<Left>"
+"}}}
 "{{{ SOURCE KEYMAPS FOR FILETYPES
 	autocmd FileType markdown source ~/.config/nvim/keys/markdown.vim
 	autocmd FileType tex source ~/.config/nvim/extra/keys/latex.vim

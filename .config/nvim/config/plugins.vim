@@ -6,8 +6,6 @@
 
 call plug#begin('~/.config/nvim/plugged')
 "{{{ THEME
-Plug 'ctrlpvim/ctrlp.vim'
-	nmap <C-b> :CtrlPBuffer<Cr>
 Plug 'arcticicestudio/nord-vim'			" the best theme for vim
 Plug 'vim-airline/vim-airline'			" for a fancier tagbar and bottom bar
 	let g:airline_theme = 'nord'
@@ -15,21 +13,12 @@ Plug 'vim-airline/vim-airline'			" for a fancier tagbar and bottom bar
 	let g:airline#extensions#tabline#formatter = 'unique_tail'
 "}}}
 "{{{ SNIPPETS
-" Plug 'Shougo/neosnippet.vim'			" snippets for faster coding
-" 	imap <C-j>     <Plug>(neosnippet_expand_or_jump)
-" 	smap <C-j>     <Plug>(neosnippet_expand_or_jump)
-" 	xmap <C-j>     <Plug>(neosnippet_expand_target)
-" 	let g:neosnippet#snippets_directory='~/.config/nvim/extra/snip'
-" 	autocmd Bufread,Bufnewfile */snip/* setlocal filetype=neosnippet
-
-
 Plug 'SirVer/ultisnips'
 		let g:UltiSnipsSnippetDirectories=[$HOME. '/.config/nvim/extra/snip/UltiSnips']
 		let g:UltiSnipsExpandTrigger="<Tab>"
 		let g:UltiSnipsJumpForwardTrigger="<c-j>"
 		let g:UltiSnipsJumpBackwardTrigger="<c-k>"
 		let g:UltiSnipsListSnippets="<c-l>"
-
 "}}}
 "{{{ TAB-COMPLETION
 Plug 'lifepillar/vim-mucomplete'		" very simple but powerfull completion-engine
@@ -54,10 +43,10 @@ Plug 'voldikss/vim-floaterm'			" floating terminal for vim
 	tnoremap   <silent>   <F12>   <C-\><C-n>:FloatermToggle<CR>
 "}}}
 "{{{ FORMATING TEXT
+Plug 'terryma/vim-multiple-cursors'		" edit the different lines the same way
 Plug 'tpope/vim-commentary'			" make commenting in any language really easy
 Plug 'tpope/vim-surround'			" surround anything
 Plug 'chrisbra/NrrwRgn'				" select only a region of your document to edit
-Plug 'jiangmiao/auto-pairs'			" autocloses
 Plug 'chrisbra/unicode.vim'			" search and insert unicode-symbols
 Plug 'godlygeek/tabular'			" easiet way to alignment
 	vmap <Tab> :Tabularize /
@@ -95,10 +84,8 @@ Plug 'majutsushi/tagbar'			" outline
 	map <F8> :TagbarToggle<Cr>
 Plug 'junegunn/vim-peekaboo'			" list what is in the vim registers
 	let g:peekaboo_prefix = '<leader>'
-"}}}
-"{{{ LF FOR VIM
-" Plug 'rbgrouleff/bclose.vim'			" needed for the lf plugin
-" Plug 'ptzz/lf.vim'				" lf for vim
+Plug 'ctrlpvim/ctrlp.vim'
+	nmap <C-b> :CtrlPBuffer<Cr>
 "}}}
 " {{{ADDITONAL MODES
 Plug 'dhruvasagar/vim-table-mode'		" easy formatting of markdown tables
@@ -111,18 +98,16 @@ Plug 'lambdalisue/fern-bookmark.vim'		" bookmarks in filetree
 Plug 'LumaKernel/fern-mapping-fzf.vim'		" fuzzy finding files in the filetree
 	let g:fern#scheme#bookmark#store#file = '~/.config/nvim/bookmarks.json'
 "}}}
+"{{{ ORG-MODE
+Plug 'hughbien/org-vim'
 Plug 'axvr/org.vim'
 	let g:org_state_keywords = ['URGENT', 'TODO', 'WAIT', 'DOING', 'DONE', 'CANCELED']
-    	let g:org_clean_folds = 1
-
-Plug 'chrisbra/csv.vim'				" plugin for csv
-Plug 'Gavinok/vim-troff'
-Plug 'hughbien/org-vim'
-
+	let g:org_clean_folds = 1
+"}}}
 "{{{ PYTHON
 Plug 'davidhalter/jedi-vim'
 	autocmd FileType python setlocal completeopt-=preview
-let g:jedi#use_splits_not_buffers = "left"
+	let g:jedi#use_tabs_not_buffers = 1
 "}}}
 "{{{ LATEX
 Plug 'KeitaNakamura/tex-conceal.vim', {'for': 'tex'}
@@ -150,18 +135,19 @@ Plug 'plasticboy/vim-markdown'
 	autocmd Bufread,Bufnewfile *.note setlocal filetype=markdown
 "}}}
 "{{{ MISC
+Plug 'chrisbra/csv.vim'				" plugin for csv
+Plug 'Gavinok/vim-troff'
 Plug 'junegunn/goyo.vim'			" work on files without distraction
 	let g:goyo_width = 120
 	let g:goyo_linenr = 0
 
 Plug 'inkarkat/vim-SyntaxRange'
-Plug 'terryma/vim-multiple-cursors'		" edit the different lines the same way
 Plug 'vim-scripts/speeddating.vim'		" in/decrease dates with <C-a>,<C-x>
 Plug 'ap/vim-css-color'				" highlight hexcolors in code
 Plug 'machakann/vim-highlightedyank'		" visualize what was yanked
 Plug 'vim-scripts/utl.vim'			" opening links with vim (pdf,url,jpg)
 	let g:utl_cfg_hdl_mt_application_pdf = ':silent !zathura %p &'
-        let g:utl_cfg_hdl_mt_image_jpeg = ':silent !sxiv %p &'
+    let g:utl_cfg_hdl_mt_image_jpeg = ':silent !sxiv %p &'
 	let g:utl_cfg_hdl_scm_http_system = "silent !firefox -remote 'ping()' && firefox -remote 'openURL( %u )' || firefox '%u#%f' &"
 	let g:utl_cfg_hdl_mt_text_directory='VIM'
 	map gl :Utl<Cr>
