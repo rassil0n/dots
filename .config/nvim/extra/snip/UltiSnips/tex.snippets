@@ -199,6 +199,12 @@ snippet it "Individual item" b
 endsnippet
 #]]]
 #[[[FONT
+
+snippet "tc()?( (\S+))?" "Text color" ir
+\textcolor{${1:`!p
+snip.rv = match.group(3) if match.group(2) is not None else "color"`}}{${2:${VISUAL:body}}}$0
+endsnippet
+
 snippet bf "Bold" i
 \textbf{${1:${VISUAL}}}$0
 endsnippet
