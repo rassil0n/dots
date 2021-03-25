@@ -13,6 +13,24 @@ set ifs "\n"
 
 # CMDS/FUNCTIONS
 
+# y (select for copy) and P to paste soft-link
+# d (select for cut) and P to paste hard-link
+cmd link %{{
+    set -- $(lf -remote load)
+    mode="$1"
+    shift
+    if [ "$#" -lt 1 ]; then
+        lf -remote "send $id echo no files to link"
+        exit 0
+    fi
+    case "$mode" in
+        # symbolically copy mode is indicating a soft link
+        copy) ln -sr -t . -- "$@";;
+        # while a move mode is indicating a hard link
+        move) ln -t . -- "$@";;
+    esac
+}}
+
 cmd on-cd &{{
 	printf "\033]0; (lf) - $PWD\007" > /dev/tty
 }}
@@ -53,6 +71,7 @@ cmd yank-basename-without-extension ${{
 # cmd cd-fuzzy ${{
 # 	lf -remote "send $id cd $(ls -d1 */ |fzf | sed 's/\ /\\ /g')"
 # }}
+#
 
 cmd cd-fuzzy ${{
 	lf -remote "send $id select $(ls -d1 */ | fzf | sed 's/\ /\\ /g')"
@@ -149,7 +168,7 @@ cmd paste ${{
     lf -remote 'send clear'
 }}
 
-cmd dragon %swallow dragon-drag-and-drop -a -x $fx
+cmd dragon %dragon-drag-and-drop -a -x $fx
 cmd cpdragon %cpdragon
 cmd mvdragon %mvdragon
 
@@ -209,14 +228,14 @@ map br bulk-rename
 map x $lf_extract -c $f
 map X $lf_extract $f
 
-map ct %lf_packer $fs
+map ct $lf_packer $fs
 map cz $gzip $f
 map cx $xz $f
 map c2 $bzip2 $f
 
 # OPENING FILES
 map o $lf_opener -s $f
-map O &lf_opener -c $f
+# map O &lf_opener -c $f
 # map O &lf_choose_opener $f
 map e $$EDITOR $f
 map E editExt
@@ -230,20 +249,32 @@ map R redraw
 map W $setwal $f
 map . set hidden!
 map du diskUsage
-map <c-e> down
-map <c-y> up
+
+# MOUSE
+map <m-down> down
+map <m-up> up
+map <m-1> open
+map <m-2> updir
+map <m-3> toggle
 
 # SHELL
-map s shell
+# map s shell
 # map <enter> shell
 map S $$SHELL
 map <enter> cd-fuzzy
 map <backspace2> sel-fuzzy
 
-map wd yank-dirname
-map wp yank-path
-map wb yank-basename
-map we yank-basename-without-extension
+map yd yank-dirname
+map yp yank-path
+map yb yank-basename
+map ye yank-basename-without-extension
+
+map U clear
+
+cmd open-with %"$@" $fx
+map O push :open-with<space>
+
+map P :link
 
 # FILEPICKER TMUX
 cmd zle-cd %printf 'cd %q && zle reset-prompt\n' "$PWD" >&$ZLE_FIFO
