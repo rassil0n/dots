@@ -1,0 +1,16 @@
+#!/bin/sh
+
+OPTIONS="Quit DWM\nShutdown\nReboot"
+
+OPTCH=$(echo "${OPTIONS}" | amenu)
+
+case "${OPTCH}" in
+	"Quit DWM")
+		pkill dwm ;;
+
+	Shutdown)
+		systemctl poweroff ;;
+
+	Reboot)
+		systemctl reboot ;;
+esac
