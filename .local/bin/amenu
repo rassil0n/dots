@@ -1,0 +1,93 @@
+#!/bin/sh
+#
+# Fuzzy Finder Dynamic GUI Menu
+#
+# Dependencies: fzf & tail
+
+#===============================================================================
+#                              Config
+#===============================================================================
+
+TERMINAL=st
+# TERMINAL=termux
+# TERMINAL=xterm
+
+WIDTH=40
+HEIGHT=10
+OFFSET_X=950
+OFFSET_Y=200
+# OFFSET_X=0
+# OFFSET_Y=0
+
+export FZF_DEFAULT_OPTS="\
+   --cycle
+   --print-query
+   --no-multi
+   --reverse --border bottom --no-info --no-color --header '' --margin 0%,0%
+   --bind \;:accept
+   --bind esc:cancel
+   --bind tab:down
+   --bind btab:up
+"
+
+#===============================================================================
+#                              Script
+#===============================================================================
+
+FILE_ARGS=/tmp/AMENU_FILE_ARGS
+FILE_CHOICES=/tmp/AMENU_FILE_CHOICES
+
+FLAG_CLASS=
+FLAG_GEOMETRY=
+
+scan_args() {
+   while IFS= read -r line; do echo "$line"; done
+   [ -n "$line" ] && echo "$line"
+}
+show() { while IFS= read -r line; do echo "$line"; done < $FILE_CHOICES; }
+run_menu() {
+   scan_args > $FILE_ARGS
+   prompt
+   show
+}
+run_app() {
+   while IFS= read -r program; do
+      $program > /dev/null 2>&1 &
+   done < $FILE_CHOICES
+}
+prompt() {
+   GEOMETRY=$WIDTH"x"$HEIGHT+$OFFSET_X+$OFFSET_Y
+
+   : > $FILE_CHOICES
+   $TERMINAL \
+      $FLAG_CLASS amenu \
+      $FLAG_GEOMETRY $GEOMETRY \
+      -e "$SHELL" -c "fzf $PROMPT < $FILE_ARGS | tail -1 > $FILE_CHOICES" 2> /dev/null
+   [ -s "$FILE_CHOICES" ] || exit 1
+}
+scan_apps() {
+   for program in /usr/bin/* /usr/local/bin/* ~/.local/bin/*; do
+      echo "${program##*/}"
+   done > $FILE_ARGS
+}
+run_launcher() {
+   scan_apps
+   prompt
+   run_app
+}
+init() {
+   case $TERMINAL in
+      st) FLAG_CLASS=-c && FLAG_GEOMETRY=-g ;;
+      xterm) FLAG_CLASS=-class && FLAG_GEOMETRY=-geometry ;;
+      termite) FLAG_CLASS=--class ;;
+   esac
+}
+main() {
+   init
+   case $1 in
+      -l) run_launcher ;;
+      -p) PROMPT="--header $2" && run_menu ;;
+      *) run_menu ;;
+   esac
+}
+main "$@"
