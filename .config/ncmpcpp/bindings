@@ -10,7 +10,7 @@ def_key "h"
     previous_column
 def_key "l"
 	next_column
-def_key "t"
+def_key "T"
 	show_tag_editor
 def_key "m"
 	show_media_library
