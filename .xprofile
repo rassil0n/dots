@@ -1,10 +1,11 @@
 # numlockx &
 mpd &
-setwal &
 setxkbmap -option caps:escape
 xset -dpms &
 xset s off &
+flameshot &
+setwal &
 dunst &
-updatecheck &
-ipcheck &
 yads &
+updatecheck &
+rsscheck &
