@@ -12,7 +12,8 @@ alias tmuxs='tmux source ~/.config/tmux/tmux.conf'
 
 # AUTOCOLOR
 alias grep='grep --color=auto'
-alias ls='ls --group-directories-first --color=auto'
+# alias ls='ls --group-directories-first --color=auto'
+alias ls='exa'
 
 # LS
 alias ll='ls -hl'
@@ -51,7 +52,7 @@ alias grm='git rm'
 
 # MISC
 alias cloneweb='wget -m -p -E -k'
-alias texclean='rm *{log,toc}'
+# alias texclean='rm *{log,toc}'
 
 alias ru='ps axch -o cmd:15,%mem --sort=-%mem | head'
 alias cu='ps axch -o cmd:15,%cpu --sort=-%cpu | head'
