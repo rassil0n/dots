@@ -13,11 +13,14 @@ alias tmuxs='tmux source ~/.config/tmux/tmux.conf'
 # AUTOCOLOR
 alias grep='grep --color=auto'
 # alias ls='ls --group-directories-first --color=auto'
-alias ls='exa'
 
 # LS
+alias ls='exa'
 alias ll='ls -hl'
 alias la='ls -hla'
+
+# CAT
+alias cat='batcat --theme=base16'
 
 # CONFIG-FILES
 alias cfa='nvim ~/.config/aliasrc'
