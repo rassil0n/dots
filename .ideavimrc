@@ -1,9 +1,39 @@
+" settings
+set ideajoin
+set idearefactormode=keep
+set number relativenumber
+
+" leader key
+let mapleader = " "
+
+" insert empty lines in normal mode
+nmap <S-Enter> O<Esc>
+nmap <Enter> o<Esc>
+
+" system clipboard
+    "yank
+    vmap <leader>y "+y
+    nmap <leader>y "+yy
+
+    "cut
+    vmap <leader>d "+y
+    nmap <leader>d "+yy
+
+    "paste
+    nmap <leader>p "+p
+    nmap <leader>P "+P
+    vmap <leader>p "+p
+    vmap <leader>P "+P
+
+
+" move lines
+nmap <C-j> :m +1<Cr>
+nmap <C-k> :m -2<Cr>
+
+" extensions
 set surround
 set commentary
 set highlightedyank
 set multiple-cursors
-
-map <C-k> <C-w>k
-map <C-j> <C-w>j
-map <C-h> <C-w>h
-map <C-l> <C-w>l
+set NERDTree
+    nmap <Tab> :NERDTreeFocus<Cr>
