@@ -49,5 +49,14 @@ export SUDO_PROMPT=$(printf "\e[01;30;47msudo\e[0m : ")
 
 eval $(dircolors $HOME/.config/dir_colors)
 
+# LF ICONS
+LF_ICONS=$(sed ~/.config/icons \
+            -e '/^[ \t]*#/d'       \
+            -e '/^[ \t]*$/d'       \
+            -e 's/[ \t]\+/=/g'     \
+            -e 's/$/ /')
+LF_ICONS=${LF_ICONS//$'\n'/:}
+export LF_ICONS
+
 # START WM WITH LOGIN
 # exec startx
