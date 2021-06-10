@@ -3,20 +3,25 @@
 # origianl script by Luke Smith:
 # https://github.com/LukeSmithxyz/voidrice/blob/master/.local/bin/ext
 
-while getopts "hc" o; do case "${o}" in
-	c) extracthere="True" ;;
-	*) printf "Options:\\n   -c: Extract archive into current directory rather than a new one.\\n" && exit ;;
-esac done
+args(){
+	action=$1
+	shift "$(($# ? 1 : 0))"
+	archive=$(readlink -f "$*")
+	directory="$(echo "$archive" | sed 's/\.[^\/.]*$//')"
+}
 
-if [ -z "$extracthere" ]; then
-	archive="$(readlink -f "$*")" &&
-	directory="$(echo "$archive" | sed 's/\.[^\/.]*$//')" &&
-	mkdir -p "$directory" &&
-	cd "$directory" || exit
-else
-	archive="$(readlink -f "$(echo "$*" | cut -d' ' -f2)")"
-fi
+printHelp(){
+cat << EOF
+	Usage:
+		extract [c|x] <filename>
 
+		c)	create directory and extract in there
+		x)	extract in place
+EOF
+}
+
+
+extract(){
 [ "$archive" = "" ] && printf "Give archive to extract as argument.\\n" && exit
 
 if [ -f "$archive" ] ; then
@@ -39,3 +44,19 @@ if [ -f "$archive" ] ; then
 else
 	printf "File \"%s\" not found.\\n" "$archive"
 fi
+}
+
+main(){
+	args $@
+
+	case ${action} in
+		-c|c)	mkdir -p "$directory" &&
+				cd "$directory" || exit
+				extract ;;
+
+		-x|x)	extract;;
+		*)		printHelp ;;
+	esac
+}
+
+main "$@"

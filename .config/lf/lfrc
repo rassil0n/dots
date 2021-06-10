@@ -225,8 +225,8 @@ map A rename-end
 map br bulk-rename
 
 # ARCHIVES
-map x $lf_extract -c $f
-map X $lf_extract $f
+map x $extract -x $f
+map X $extract -c $f
 
 map ct $lf_packer $fs
 map cz $gzip $f
