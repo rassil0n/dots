@@ -64,7 +64,7 @@
 	inoremap <expr> ' strpart(getline('.'), col('.')-1, 1) == "\'" ? "\<Right>" : "\'\'\<Left>"
 "}}}
 "{{{ SOURCE KEYMAPS FOR FILETYPES
-	autocmd FileType markdown source ~/.config/nvim/keys/markdown.vim
+	autocmd FileType markdown source ~/.config/nvim/extra/keys/markdown.vim
 	autocmd FileType tex source ~/.config/nvim/extra/keys/latex.vim
 "}}}
 "{{{ MISC
