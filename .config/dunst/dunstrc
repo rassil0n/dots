@@ -138,8 +138,8 @@ dmenu = /usr/bin/dmenu -p dunst:
 browser = /usr/bin/firefox -new-tab
 
 # Align icons left/right/off
-icon_position = off
-max_icon_size = 80
+icon_position = left
+max_icon_size = 48
 
 # Paths to default icons.
 icon_path = /usr/share/icons/Paper/16x16/mimetypes/:/usr/share/icons/Paper/48x48/status/:/usr/share/icons/Paper/16x16/devices/:/usr/share/icons/Paper/48x48/notifications/:/usr/share/icons/Paper/48x48/emblems/
@@ -170,24 +170,32 @@ frame_color = "#8EC07C"
 
 separator_color = "#E5E9F0"
 
-[urgency_low]
 # IMPORTANT: colors have to be defined in quotation marks.
 # Otherwise the "#" and following would be interpreted as a comment.
-background = "#434C5E"
-foreground = "#E5E9F0"
-frame_color = "#4C566A"
-timeout = 4
+[urgency_low]
+	background = "#4C566A"
+	foreground = "#E5E9F0"
+	frame_color = "#4C566A"
+	timeout = 4
 
 [urgency_normal]
-background = "#434C5E"
-foreground = "#E5E9F0"
-frame_color = "#A3BE8C"
-timeout = 6
+	background = "#434C5E"
+	foreground = "#E5E9F0"
+	frame_color = "#434C5E"
+	timeout = 6
 
 [urgency_critical]
-background = "#434C5E"
-foreground = "#E5E9F0"
-frame_color = "#BF616A"
-timeout = 8
+	background = "#BF616A"
+	foreground = "#E5E9F0"
+	frame_color = "#BF616A"
+	timeout = 0
+
+[ncspot]
+	appname = *ncspot*
+	format = "<b> Now Playing:</b>\n%s\n%b"
+	background = "#1d2021"
+	foreground = "#ebdbb2"
+	frame_color = "#1db954"
+	timeout = 5
 
 # vim: ft=cfg
