@@ -49,3 +49,4 @@ map <C-=> zoom in
 map <C--> zoom out
 map B jumplist backward
 map b jumplist forward
+map c recolor
