@@ -1,0 +1,19 @@
+#!/bin/sh
+
+# fix slow gtk-startup (https://bbs.archlinux.org/viewtopic.php?id=224787)
+dbus-update-activation-environment --systemd DBUS_SESSION_BUS_ADDRESS DISPLAY XAUTHORITY
+
+/home/flo/.screenlayout/work.sh &
+numlockx &
+mpd &
+setxkbmap -option caps:escape &
+xset -dpms &
+xset s off &
+flameshot &
+nm-applet &
+dunst &
+yads &
+updatecheck &
+rsscheck &
+setbg &
+#covidcheck &

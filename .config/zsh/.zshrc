@@ -1,6 +1,6 @@
 # SOURCE ALIASES AND FUNCTIONS
-	. ~/.config/aliasrc
-	. ~/.config/funcrc
+	. ~/.config/shell/aliasrc
+	. ~/.config/shell/funcrc
 
 # AUTO CHANGE DIR
 	setopt autocd autopushd
@@ -14,9 +14,6 @@
 	bindkey -v
 
 # COMPLETION
-	# zstyle :compinstall filename '~/.config/zsh/.zshrc'
-	# autoload -Uz compinit
-	# compinit
 	autoload -U compinit
 	zstyle ':completion:*' menu select
 	zmodload zsh/complist

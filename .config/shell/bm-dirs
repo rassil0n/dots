@@ -1,0 +1,10 @@
+c   $HOME/.config
+d	$HOME/dl
+D   $HOME/dox
+s   $HOME/.local/share
+r	$HOME/.local/repos
+h   $HOME
+m   $HOME/mm
+mn  /mnt
+b   $HOME/.local/bin
+s	$HOME/.local/src

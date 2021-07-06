@@ -1,9 +1,11 @@
+# CHECK IF INSTANCE IS RUNNING
+$[ $LF_LEVEL -eq 1 ] || read -p "Warning: You're in a nested lf instance!" foo
+
 # BASIC VARS
 set drawbox
 set previewer ~/.config/lf/pv
 set cleaner ~/.config/lf/clear_img.sh
 set scrolloff 10
-# set color256
 set icons
 
 # needed for the most scripts
@@ -12,6 +14,51 @@ set shellopts '-e:--shwordsplit'
 set ifs "\n"
 
 # CMDS/FUNCTIONS
+cmd copyto ${{
+	clear; tput cup $(($(tput lines)/3)); tput bold
+	set -x
+	clear; echo "Copy to where?"
+	dest="$(awk '{print $2}' $HOME/.config/shell/bm-dirs | fzf | sed 's|~|$HOME|' )" &&
+	for x in $fx; do
+		eval cp -ivr \"$x\" \"$dest\"
+	done &&
+	notify-send "📋 File(s) copied." "File(s) copies to $dest."
+}}
+
+
+cmd moveto ${{
+	clear; tput cup $(($(tput lines)/3)); tput bold
+	set -f
+	clear; echo "Move to where?"
+	dest="$(awk '{print $2}' $HOME/.config/shell/bm-dirs | fzf | sed 's|~|$HOME|' )" &&
+	for x in $fx; do
+		eval mv -iv \"$x\" \"$dest\"
+	done &&
+	notify-send "🚚 File(s) moved." "File(s) moved to $dest."
+}}
+
+cmd select-files ${{
+    { echo "$fs"; find -L "$(pwd)" -mindepth 1 -maxdepth 1 -type f; } |
+        if [ "$lf_hidden" = "false" ]; then
+          # remove any hidden files so you only select files you can see.
+          grep -v '/\.[^/]\+$'
+        else
+          cat
+        fi |
+        sed '/^$/d' | sort | uniq -u |
+        xargs -d '\n' -r -I{} lf -remote "send $id toggle {}"
+}}
+
+cmd select-dirs ${{
+    { echo "$fs"; find -L "$(pwd)" -mindepth 1 -maxdepth 1 -type d; } |
+        if [ "$lf_hidden" = "false" ]; then
+          grep -v '/\.[^/]\+$'
+        else
+          cat
+        fi |
+        sed '/^$/d' | sort | uniq -u |
+        xargs -d '\n' -r -I{} lf -remote "send $id toggle {}"
+}}
 
 # y (select for copy) and P to paste soft-link
 # d (select for cut) and P to paste hard-link
@@ -24,32 +71,18 @@ cmd link %{{
         exit 0
     fi
     case "$mode" in
-        # symbolically copy mode is indicating a soft link
         copy) ln -sr -t . -- "$@";;
-        # while a move mode is indicating a hard link
         move) ln -t . -- "$@";;
     esac
 }}
 
-cmd on-cd &{{
-	printf "\033]0; (lf) - $PWD\007" > /dev/tty
-}}
-
+# set wintitle on cd
+cmd on-cd &{{ printf "\033]0; (lf) - $PWD\007" > /dev/tty }}
 on-cd
 
-cmd yank-dirname ${{
-    dirname -- "$f" | tr -d '\n' | xclip -i -selection clipboard
-}}
-
-cmd yank-path ${{
-    echo "$fx" | xclip -i -selection clipboard
-}}
-
-cmd yank-basename ${{
-    echo "$fx" |
-      xargs -r -d '\n' basename -a -- |
-      xclip -i -selection clipboard
-}}
+cmd yank-dirname ${{ dirname -- "$f" | tr -d '\n' | xclip -i -selection clipboard }}
+cmd yank-path ${{ echo "$fx" | xclip -i -selection clipboard }}
+cmd yank-basename ${{ echo "$fx" | xargs -r -d '\n' basename -a -- | xclip -i -selection clipboard }}
 
 cmd yank-basename-without-extension ${{
     echo "$fx" |
@@ -68,20 +101,13 @@ cmd yank-basename-without-extension ${{
           print $0
       }' | xclip -i -selection clipboard
 }}
-# cmd cd-fuzzy ${{
-# 	lf -remote "send $id cd $(ls -d1 */ |fzf | sed 's/\ /\\ /g')"
-# }}
-#
 
-cmd cd-fuzzy ${{
-	lf -remote "send $id select $(ls -d1 */ | fzf | sed 's/\ /\\ /g')"
-}}
+# fuzzy finds
+cmd cd-fuzzy ${{ lf -remote "send $id cd $(ls -d1 */ |fzf | sed 's/\ /\\ /g')" }}
+cmd sel-fuzzy ${{ lf -remote "send $id select $(find -maxdepth 1 -type f | fzf | sed 's/\ /\\ /g')" }}
+# cmd cd-fuzzy ${{ lf -remote "send $id select $(ls -d1 */ | fzf | sed 's/\ /\\ /g')" }}
 
-cmd sel-fuzzy ${{
-	lf -remote "send $id select $(find -maxdepth 1 -type f | fzf | sed 's/\ /\\ /g')"
-}}
-
-cmd rename %[ -e $1 ] && printf "file exists" || mv $f $1
+# cmd rename %[ -e $1 ] && printf "file exists" || mv $f $1
 cmd editExt ${{ setsid st -e $EDITOR $f & }}
 cmd diskUsage ${{ du --max-depth=1 -h --apparent-size | less }}
 
@@ -98,27 +124,6 @@ cmd tofold ${{
 		[ "$choice" = "y" ] && mv $fx $newd
 
 	else 	mkdir $newd && mv $fx $newd; fi
-}}
-
-# Edit the current filename
-cmd rename-end ${{
-	# get 'basename' of the selection
-	filename="${f##*/}"
-	# quote it so we won't deal with quotes in the lf -remote command
-	filename="$(printf '%q' "$filename" |sed 's/\\//g')"
-	filename="${filename// /<space>}"
-	lf -remote "send $id push :rename<space>'$filename'<c-b>"
-}}
-
-
-# Edit filename before the extension
-cmd rename-ext ${{
-	# get 'basename' of the selection
-	filename="${f##*/}"
-	# quote it so we won't deal with quotes in the lf -remote command
-	filename="$(printf '%q' "$filename" |sed 's/\\//g')"
-	filename="${filename// /<space>}"
-	lf -remote "send $id push :rename<space>'$filename'<a-b><c-b>"
 }}
 
 # bulk-rename
@@ -151,34 +156,34 @@ cmd delete ${{
 }}
 
 cmd paste ${{
-    load=$(lf -remote 'load')
-    mode=$(echo "$load" | sed -n '1p')
-    list=$(echo "$load" | sed '1d')
-    if [ $mode = 'copy' ]; then
-        rsync -av --ignore-existing --progress $list . \
-        | stdbuf -i0 -o0 -e0 tr '\r' '\n' \
-        | while read line; do
-            # lf -remote "send $id echo $line"
-            echo "$line"
-        done
-    elif [ $mode = 'move' ]; then
-        mv -n $list .
-    fi
-    lf -remote 'send load'
-    lf -remote 'send clear'
+    set -- $(cat ~/.local/share/lf/files)
+    mode="$1"
+    shift
+    case "$mode" in
+        copy)
+            rsync -av --ignore-existing --progress -- "$@" . |
+            stdbuf -i0 -o0 -e0 tr '\r' '\n' |
+            while IFS= read -r line; do
+                lf -remote "send $id echo $line"
+            done
+            ;;
+        move) mv -nv -- "$@" .;;
+    esac
+    rm ~/.local/share/lf/files
+    lf -remote "send load"
+    lf -remote "send clear"
 }}
+
 
 cmd dragon %dragon-drag-and-drop -a -x $fx
 cmd cpdragon %cpdragon
 cmd mvdragon %mvdragon
 
 
-cmd info ${{
-	$HOME/.config/lf/pv $fx | less
-}}
+cmd info ${{ $HOME/.config/lf/pv $fx | less }}
 
 # UNBIND KEYS
-map y; map d; map p; map d; map c; map g; map q; map r; map w; map n
+map y; map d; map p; map d; map c; map g; map q; map r; map w
 
 
 map i info
@@ -187,6 +192,7 @@ map gg top
 # CHANGE DIR
 map <c-f> $lf -remote "send $id select '$(fzf)'"
 map <c-g> $lf -remote "send $id cd '$(find -type d | fzf)'"
+map J $lf -remote "send $id cd $(awk '{print $2}' $HOME/.config/shell/bm-dirs | fzf | sed 's|$HOME|~|')"
 map cd push :cd<space>
 map gc cd ~/.config
 map gd cd ~/dl
@@ -199,6 +205,7 @@ map gr cd ~/.local/repos
 map gb cd ~/.local/bin
 map gs cd ~/.local/share
 map go cd ~/.local/opt
+map gO cd ~/drive
 map gn cd ~/.local/share/notes
 map gh cd ~
 
@@ -206,6 +213,8 @@ map gh cd ~
 map yy copy
 map dd cut
 map pp paste
+map Y copyto
+map M moveto
 
 # GUI COPY/MOVE
 map dr dragon
@@ -219,24 +228,24 @@ map tf tofold
 map D delete
 
 # RENAME
-map C push :rename<space>''<left>
-map re rename-ext
-map A rename-end
-map br bulk-rename
+map C push A<c-u>			# new rename
+map I push A<c-a>			# at the very beginning
+map A rename				# at the very end
+map i push A<a-b><c-b>		# before extention
+# map a push A<a-b>			# after extention
+map br bulk-rename			# more files
 
 # ARCHIVES
 map x $extract -x $f
 map X $extract -c $f
-
-map ct $lf_packer $fs
+map ct $lf_packer $fx
 map cz $gzip $f
 map cx $xz $f
 map c2 $bzip2 $f
 
 # OPENING FILES
 map o $lf_opener -s $f
-# map O &lf_opener -c $f
-# map O &lf_choose_opener $f
+map O &lf_opener -c $f
 map e $$EDITOR $f
 map E editExt
 
@@ -246,16 +255,21 @@ map ZQ quit
 map <c-z> $ kill -STOP $PPID
 map <c-r> reload
 map R redraw
-map W $setwal $f
+# map W $setwal $f
+map W $setbg $f
 map . set hidden!
-map du diskUsage
+# map du diskUsage
+map du $ncdu
 
 # MOUSE
 map <m-down> down
+map <c-e> down
 map <m-up> up
-map <m-1> open
-map <m-2> updir
-map <m-3> toggle
+map <c-y> up
+map <m-1> toggle
+map <m-2> dragon
+map <m-3> open
+# map <c-m-3> updir
 
 # SHELL
 # map s shell
@@ -269,12 +283,15 @@ map yp yank-path
 map yb yank-basename
 map ye yank-basename-without-extension
 
+map yi select-files
+map yo select-dirs
+
 map U clear
 
-cmd open-with %"$@" $fx
-map O push :open-with<space>
+# cmd open-with %"$@" $fx
+# map O push :open-with<space>
 
-map P :link
+map pP :link
 
 # FILEPICKER TMUX
 cmd zle-cd %printf 'cd %q && zle reset-prompt\n' "$PWD" >&$ZLE_FIFO

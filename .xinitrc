@@ -1,3 +1,1 @@
-#!/bin/sh
-. ~/.xprofile
-exec dwm
+/home/flo/.config/x11/xinitrc

@@ -1,0 +1,4 @@
+#!/bin/sh
+. ~/.config/x11/xprofile
+exec dwm
+# exec xfce4-session
