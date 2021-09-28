@@ -1,14 +1,15 @@
 #!/usr/bin/env zsh
 
+local ARROW=$'\u25B6'
 local CONNECTBAR_DOWN=$'\u250C\u257C'
 local CONNECTBAR_UP=$'\u2514\u257C'
 local SPLITBAR=$'\u257E\u257C'
-local ARROW=$'\u25B6'
 local NEW=$'\n'
 local c_gray=$'\e[01;30m'
 local c_blue=$'\e[0;34m'
 local c_cyan=$'\e[0;36m'
 local c_reset=$'\e[0m'
+[ $UID = 0 ] && local ROOT="${c_blue}root: "
 
 PROMPT="${NEW}${c_gray}$CONNECTBAR_DOWN\
 "["%~${c_gray}"]"${SPLITBAR}\
@@ -16,7 +17,7 @@ PROMPT="${NEW}${c_gray}$CONNECTBAR_DOWN\
 "["${c_blue}%?${c_gray}"]"\
 "["${c_blue}%m${c_gray}"]"${SPLITBAR}\
 "["${c_blue}%D{%H:%M:%S}${c_gray}"]"${NEW}${CONNECTBAR_UP}\
-${ARROW} "
+${ARROW} ${ROOT}"
 
 # OLD PROMPT
 # PROMPT=' %F{yellow}[ %5~ ] %f
