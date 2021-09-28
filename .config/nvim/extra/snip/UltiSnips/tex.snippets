@@ -878,6 +878,93 @@ endsnippet
 
 
 #]]]
+#[[[CONFIG
+snippet confpaper "Configure Paper" b
+\usepackage[a4paper, bottom=2.5cm, top=2.5cm, left=2cm, right=2cm]{geometry}
+\setlength\parindent{0cm}
+$0
+endsnippet
+
+snippet conflang "Configure language" b
+\usepackage{polyglossia}
+\setdefaultlanguage{german}
+$0
+endsnippet
+
+snippet conffont "Configure fonts" b
+\usepackage{fontspec}
+\setmainfont{Noto Serif}
+\setsansfont{Noto Sans}
+\setmonofont{Noto Sans Mono}
+\usepackage{unicode-math}
+\usepackage{mathtools}
+\setmathfont[Scale=MatchLowercase]{Asana Math}
+\renewcommand\familydefault{\sfdefault}
+\setkomafont{pageheadfoot}{\sffamily}
+endsnippet
+
+snippet confheadfoot "Configure header and footer" b
+\usepackage[headsepline,footsepline]{scrlayer-scrpage}
+\pagestyle{scrheadings}
+\clearpairofpagestyles
+
+\ihead{title \quad - \quad subtitle}
+\ohead{\leftmark}
+
+\ifoot{\textcopyleft \theauthor}
+\ofoot{\thepage}
+endsnippet
+
+snippet confhyper "Configure hyperlinks" b
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks=true,
+    linkcolor=NordBlack,
+    filecolor=NordMagenta,
+    urlcolor=NordBlue,
+}
+endsnippet
+
+snippet confheadings "Configure headings" b
+\usepackage{titlesec}
+\usepackage{ulem}
+
+\titleformat{\part}
+{\huge\bfseries\color{NordBrightBlue}}
+{\titlerule}
+{0cm}
+{\filleft}[{\titlerule[2pt]}]
+
+\titleformat{\section}
+{\Large\bfseries}
+{\thesection}
+{.2cm}
+{}
+
+\titleformat{\subsection}
+{\large\bfseries}
+{\thesubsection}
+{.5cm}
+{}[\titlerule]
+
+\titleformat{\subsubsection}
+{\itshape\bfseries}
+{\thesubsubsection}
+{.5cm}
+{}[\titlerule]
+endsnippet
+
+snippet conftabularx "Configure tabularx" b
+\usepackage{tabularx,ragged2e}
+\usepackage{booktabs}
+\newcolumntype{C}{>{\Centering\arraybackslash}X} % centered "X" column
+endsnippet
+
+snippet conftikz "Configure tikz" b
+\usepackage{tikz}
+\usetikzlibrary{shapes,arrows,positioning,backgrounds,fit}
+endsnippet
+#]]]
 #[[[ OTHERS
 snippet fbox "Add fbox" b
 \fbox{${1:${VISUAL:body}}}$0
@@ -928,8 +1015,6 @@ endsnippet
 snippet todo "Add a todo note" i
 \todo`!p snip.rv='[' if t[1] else ""`${1:inline}`!p snip.rv = ']' if t[1] else ""` {${2:todo}}
 endsnippet
-
-
 #]]]
 
 #[[[ UNDEFINED
