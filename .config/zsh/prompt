@@ -9,15 +9,14 @@ local c_gray=$'\e[01;30m'
 local c_blue=$'\e[0;34m'
 local c_cyan=$'\e[0;36m'
 local c_reset=$'\e[0m'
-[ $UID = 0 ] && local ROOT="${c_blue}root: "
 
 PROMPT="${NEW}${c_gray}$CONNECTBAR_DOWN\
 "["%~${c_gray}"]"${SPLITBAR}\
 "["${c_blue}%j${c_gray}"]"\
 "["${c_blue}%?${c_gray}"]"\
-"["${c_blue}%m${c_gray}"]"${SPLITBAR}\
+"["${c_blue}%n@%m${c_gray}"]"${SPLITBAR}\
 "["${c_blue}%D{%H:%M:%S}${c_gray}"]"${NEW}${CONNECTBAR_UP}\
-${ARROW} ${ROOT}"
+${ARROW} "
 
 # OLD PROMPT
 # PROMPT=' %F{yellow}[ %5~ ] %f
