@@ -3,6 +3,9 @@
 export _JAVA_AWT_WM_NONREPARENTING=1
 export _JAVA_FX_WM_NONREPARENTING=1
 
+# gtk theme for qt
+export QT_QPA_PLATFORMTHEME=gtk2
+
 # ADD $HOME/.local/bin TO PATH
 export PATH="$PATH:$(du "$HOME/.local/bin/" | cut -f2 | paste -sd ':')"
 
