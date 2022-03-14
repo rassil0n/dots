@@ -9,30 +9,31 @@ args(){
 standard_open(){
 	case "${file}" in
 		*.pdf)
-			setsid zathura "${file}" & ;;
+			setsid zathura "${file}" > /dev/null 2>&1 & ;;
 
 		*.png|*.jpg|*.jpeg|*.bmp|*.tif|*.tiff|*.gif)
 			setsid sxiv -aio "${file}" & ;;
 
-		*.doc|*.docx|*.ppt|*.pptx|*.xls|*.xlsx)
+		*.doc|*.docx|*.ppt|*.pptx|*.xls|*.xlsx|*.odp)
 			setsid libreoffice "${file}" & ;;
 
 		*.html|*.htm|*.xml|*.php)
 			setsid qutebrowser "${file}" & ;;
 
 		*.mkv|*.mp4|*.avi|*.mpge|*.mp2|*.ogv)
-			setsid mpv "${file}" & ;;
+			setsid mpv "${file}" > /dev/null 2>&1 & ;;
 
 		*.mp3|*.aac|*.flac|*.ogg|*.wav|*.wma)
-			setsid $TERMINAL -e mpv "${file}" & ;;
+			setsid $TERMINAL -e mpv "${file}" > /dev/null 2>&1 & ;;
 
 		*.txt|*.log|*.cfg|*.tex|*.md|*.markdown)
 			$TERMINAL -e $EDITOR "${file}" & ;;
 
 		*.c|*.cpp|*.js|*.css|*.java)
 			setsid $TERMINAL -e $EDITOR "${file}" & ;;
-                *.epub|*.mobi|*.azw3)
-                        setsid ebook-viewer "${file}" & ;;
+
+        *.epub|*.mobi|*.azw3)
+			setsid ebook-viewer "${file}" & ;;
 
 		*)
 			case $(file --mime-type "${file}" -b) in
@@ -48,7 +49,7 @@ standard_open(){
 }
 
 choose_open(){
-	what=$(echo "ark\nevince\npdfstudio\nvlc\ngimp\nzathura-tabbed" | rofi -location 2 -font "monospace 10" -l 6 -dmenu -p "Open in what?")
+	what=$(echo "ark\nevince\npdfstudio\nvlc\ngimp\nzathura-tabbed" | amenu)
 	setsid "${what}" "${file}" &
 }
 

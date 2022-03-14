@@ -14,6 +14,26 @@ set shellopts '-e:--shwordsplit'
 set ifs "\n"
 
 # CMDS/FUNCTIONS
+# rewrite open-function to mount archives
+cmd open ${{
+    case "$f" in
+        *.tar.bz|*.tar.bz2|*.tbz|*.tbz2|*.tar.gz|*.tgz|*.tar.xz|*.txz|*.zip|*.rar|*.iso)
+            mntdir="$f-archivemount"
+            [ ! -d "$mntdir" ] && {
+                mkdir "$mntdir"
+                archivemount "$f" "$mntdir"
+                echo "$mntdir" >> "/tmp/__lf_archivemount_$id"
+            }
+            lf -remote "send $id cd \"$mntdir\""
+            lf -remote "send $id reload"
+            ;;
+        *)
+            for f in $fx; do
+                $OPENER $f > /dev/null 2> /dev/null &
+            done;;
+    esac
+}}
+
 cmd copyto ${{
 	clear; tput cup $(($(tput lines)/3)); tput bold
 	set -x
@@ -186,7 +206,7 @@ cmd info ${{ $HOME/.config/lf/pv $fx | less }}
 map y; map d; map p; map d; map c; map g; map q; map r; map w
 
 
-map i info
+# map i info
 map gg top
 
 # CHANGE DIR
@@ -196,11 +216,11 @@ map J $lf -remote "send $id cd $(awk '{print $2}' $HOME/.config/shell/bm-dirs | 
 map cd push :cd<space>
 map gc cd ~/.config
 map gd cd ~/dl
-map gD cd ~/dox
+map gw cd ~/dox
 map gm cd /mnt
 map gM cd ~/mm
 map gt cd ~/temp
-map gw cd ~/work
+# map gw cd ~/work
 map gr cd ~/.local/repos
 map gb cd ~/.local/bin
 map gs cd ~/.local/share
@@ -234,6 +254,7 @@ map A rename				# at the very end
 map i push A<a-b><c-b>		# before extention
 # map a push A<a-b>			# after extention
 map br bulk-rename			# more files
+map <f-2> $printf '%s\n' $fx | vidir -
 
 # ARCHIVES
 map x $extract -x $f
@@ -249,14 +270,28 @@ map O &lf_opener -c $f
 map e $$EDITOR $f
 map E editExt
 
+# GIT
+cmd git_branch ${{
+    git branch | fzf | xargs git checkout
+    pwd_shell=$(pwd)
+    lf -remote "send $id updir"
+    lf -remote "send $id cd \"$pwd_shell\""
+}}
+map zb :git_branch
+map zp ${{clear; git pull --rebase || true; echo "press ENTER"; read ENTER}}
+map zs ${{clear; git status; echo "press ENTER"; read ENTER}}
+map zl ${{clear; git log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit}}
+
 # SYSTEM
+map q quit
 map ZZ quit
 map ZQ quit
 map <c-z> $ kill -STOP $PPID
-map <c-r> reload
-map R redraw
-# map W $setwal $f
+map <c-r> redraw
+map R reload
 map W $setbg $f
+map T $setsid -f $TERMINAL >/dev/null 2>&1
+map <c-o> $setsid -f $TERMINAL -e lf >/dev/null 2>&1
 map . set hidden!
 # map du diskUsage
 map du $ncdu
