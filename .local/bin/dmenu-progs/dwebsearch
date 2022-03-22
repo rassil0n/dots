@@ -10,7 +10,8 @@
 # cursor is on a web browser it acts as the address bar of that browser.
 
 browser=$BROWSER
-engine='https://duckduckgo.com/?q=%s'
+# engine='https://duckduckgo.com/?q=%s'
+engine='https://search.brave.com/search?q=%s'
 bookmarks="$HOME/.bookmarks"
 
 gotourl() {
@@ -83,7 +84,7 @@ trap 'rm "$tmpfile"' 0 1 15
 printf '%s\n%s\n' "$uricur" "$1" > "$tmpfile"
 cat "$bookmarks" >> "$tmpfile"
 sed -i -E '/^(#|$)/d' "$tmpfile"
-choice=$(dmenu -c -i -p "Search: " -w "$winid" < "$tmpfile") || exit 1
+choice=$(dmenu -i -p "Search: " -w "$winid" < "$tmpfile") || exit 1
 
 # Detect links without protocol (This is WIP)
 protocol='^(https?|ftps?|mailto|about|file):///?'
