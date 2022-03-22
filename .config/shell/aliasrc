@@ -60,6 +60,7 @@ alias rss='newsboat'
 alias ru='ps axch -o cmd:15,%mem --sort=-%mem | head'
 alias cu='ps axch -o cmd:15,%cpu --sort=-%cpu | head'
 
+alias x='startx'
 alias v='nvim'
 alias port='ssh 192.168.178.56'
 alias grave='sudo mount -U 56c5b218-8342-4939-8c87-0888b8e0b1f6 /mnt/grave; notify-send -i "~/.local/icons/grave.png" "Grave mounted"'
