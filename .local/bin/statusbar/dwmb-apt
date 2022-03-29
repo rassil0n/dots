@@ -1,0 +1,10 @@
+#!/bin/sh
+
+# get packages
+if [ ! -f /tmp/aptlist ]; then
+        aptlist="--"
+else 	aptlist=$(cat /tmp/aptlist); fi
+
+# create output
+[ "${aptlist}" != "2" ] && [ "${aptlist}" != "" ] && echo "[ 📦${aptlist} ]"
+

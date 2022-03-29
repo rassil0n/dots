@@ -1,0 +1,8 @@
+#!/bin/sh
+
+if [ ! "$(playerctl --list-all | grep ncspot)" = "" ];then
+	state=$(playerctl --player=ncspot status | sed "s/Playing/▶/;s/Paused/⏸/")
+	info=$(playerctl --player=ncspot metadata --format "{{ (artist) }} - {{ (title) }} ({{duration(position)}}/{{duration(mpris:length)}})")
+	shuffle=$(playerctl --player=ncspot shuffle | sed "s/On/🔀/;s/Off//")
+	[ ! "$state" = "Stopped" ] && echo "[ (ncspot) ${shuffle}${state} $info ]"
+fi

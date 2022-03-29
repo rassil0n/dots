@@ -1,0 +1,8 @@
+#!/bin/sh
+
+# get diskspace
+rootfree=$(df -h | awk '$6=="/"{print $4}')
+homefree=$(df -h | awk '$6=="/home"{print $4}')
+
+# create output
+printf "[ 💾%s 🏠%s ]" $rootfree $homefree

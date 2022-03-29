@@ -1,0 +1,18 @@
+#!/bin/sh
+
+status=$(cmus-remote -Q | awk '$1=="status" {print $2}') 2> /dev/null
+[ -z $status ] && exit
+
+artist=$(cmus-remote -Q | awk '$2=="artist" {for (i=3; i<=NF; i++) printf("%s " ,$i)}')
+title=$(cmus-remote -Q | awk '$2=="title" {for (i=3; i<=NF; i++) printf("%s " ,$i)}')
+duration=$(cmus-remote -Q | awk '$1=="duration" {printf("%02d:%02d" ,($2/60),($2%60))}')
+position=$( cmus-remote -Q | awk '$1=="position" {printf("%02d:%02d" ,($2/60),($2%60))}')
+
+
+case $status in
+	playing) icon="▶";;
+	paused)	icon="⏸"
+esac
+
+[ "$status" = stopped ] || [ "$status" = "" ] || printf "[ %s %s - %s (%s/%s)]\n" $icon "$artist" "$title" $position $duration
+

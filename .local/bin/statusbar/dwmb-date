@@ -1,0 +1,11 @@
+#!/bin/sh
+
+# get time
+time=$(date +%H:%M)
+date=$(date +%d.%m)
+clock="🕑"
+cal="📅"
+
+# create output
+printf "[ %s%s %s%s ]" $cal $date $clock $time
+

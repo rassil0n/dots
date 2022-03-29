@@ -12,7 +12,7 @@ xset s off &
 flameshot &
 nm-applet &
 dunst &
-yads &
+dwmblocks &
 updatecheck &
 rsscheck &
 setbg &

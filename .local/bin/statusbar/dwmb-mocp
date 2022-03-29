@@ -1,0 +1,15 @@
+#!/bin/sh
+
+status=$(mocp -i | awk '$1~"State" {print $2}')
+title=$(mocp -i | awk '$1~"SongTitle" {for (i=2; i<=NF; i++) printf("%s " ,$i)}')
+artist=$(mocp -i | awk '$1~"Artist" {for (i=2; i<=NF; i++) printf("%s " ,$i)}')
+duration=$(mocp -i | awk '$1~"TotalTime" {print $2}')
+position=$(mocp -i | awk '$1~"CurrentTime" {print $2}')
+
+case $status in
+	PLAY) icon="▶";;
+	PAUSE)	icon="⏸"
+esac
+
+[ "$status" = "STOP" ] || printf "[ %s %s - %s (%s/%s)]" $icon "$artist" "$title" $position $duration
+
