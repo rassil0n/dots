@@ -1,0 +1,10 @@
+#!/bin/sh
+
+options="-option caps:escape"
+kb="$(setxkbmap -query | grep -oP 'layout:\s*\K\w+')" || exit 1
+
+[ "$kb" = "de" ] && layout=us || layout="de nodeadkeys"
+
+setxkbmap ${layout} ${options}
+
+kill -63 $(pidof dwmblocks)

@@ -1,0 +1,4 @@
+#!/bin/sh
+
+setxkbmap "$@"
+kill -63 $(pidof dwmblocks)
