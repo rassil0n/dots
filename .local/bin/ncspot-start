@@ -1,0 +1,5 @@
+#!/bin/sh
+
+PID=$(pgrep -x ncspot)
+
+[ ! -z $PID ] && notify-send "ncspot" "ncspot is already running" && exit || ncspot

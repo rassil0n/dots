@@ -1,0 +1,18 @@
+#!/bin/sh
+
+command=$1
+value=$2
+
+spotcmd="playerctl --player=ncspot"
+
+case $command in
+	play)		${spotcmd} play-pause ;;
+	stop)		${spotcmd} stop ;;
+	next|n)		${spotcmd} next ;;
+	prev|p)		${spotcmd} previous ;;
+	pause)		${spotcmd} play-pause ;;
+	shuffle|s)	${spotcmd} shuffle toggle ;;
+	fwd|f)		${spotcmd} position ${value}+ ;;
+	bwd|b)		${spotcmd} position ${value}- ;;
+	seek)		${spotcmd} position ${value} ;;
+esac
