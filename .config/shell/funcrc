@@ -141,3 +141,7 @@ ende(){
 deen(){
 	argos-translate --from-lang de --to-lang en "$@"
 }
+
+audio-join(){
+	ffmpeg -i "concat:${(j:|:)@[2,-1]}" -acodec copy $1
+}
