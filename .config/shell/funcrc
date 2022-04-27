@@ -145,3 +145,15 @@ deen(){
 audio-join(){
 	ffmpeg -i "concat:${(j:|:)@[2,-1]}" -acodec copy $1
 }
+
+vimwiki () {
+    if [[ $# == 0 ]]
+    then
+        nvim +'VimwikiIndex'
+    elif [[ $1 == 'git' ]]
+    then
+        git -C ~/dox/wiki/ ${@:2}
+    else
+        echo 'Usage: vimwiki [git] [args ...]'
+    fi
+}
