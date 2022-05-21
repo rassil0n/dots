@@ -151,6 +151,36 @@ Plug 'vim-scripts/utl.vim'			" opening links with vim (pdf,url,jpg)
 	let g:utl_cfg_hdl_scm_http_system = "silent !firefox -remote 'ping()' && firefox -remote 'openURL( %u )' || firefox '%u#%f' &"
 	let g:utl_cfg_hdl_mt_text_directory='VIM'
 	map gl :Utl<Cr>
+
+"vimwiki
+	Plug 'vimwiki/vimwiki'
+		nmap <leader>2 :Vimwiki2HTML<Cr>
+		nmap <leader>2a :VimwikiAll2HTML<Cr>
+		let g:vimwiki_list = [{'path_html':'~/dl/export/html/', 'path':'~/dox/wiki', 'css_name': 'css/style.css'}]
+
+	" let g:vimwiki_list = [{'path': '~/my_pages/', \ 'css_name': 'main.css'}]
+	" let vimwiki_path='~/dox/wiki'
+	" let vimwiki_export_path='~/dl/export/html'
+	" let vimwiki_css_name='style.css'
+	" let g:vimwiki_list = [{ 'css_name': 'main.css'}]
+
+		function! VimwikiFindIncompleteTasks()
+		  lvimgrep /- \[ \]/ %:p
+		  lopen
+		endfunction
+
+		function! VimwikiFindAllIncompleteTasks()
+		  VimwikiSearch /- \[ \]/
+		  lopen
+		endfunction
+
+		nmap <Leader>wa :call VimwikiFindAllIncompleteTasks()<CR>
+		nmap <Leader>wx :call VimwikiFindIncompleteTasks()<CR>
+
+		let g:vimwiki_folding = 'custom'
+		autocmd FileType vimwiki setlocal foldmethod=syntax
+		autocmd FileType vimwiki setlocal foldlevel=2
+		autocmd FileType vimwiki setlocal foldenable
 "}}}
 	call plug#end()
 "{{{ NOT USED
