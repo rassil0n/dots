@@ -2,7 +2,7 @@
 
 # get time
 time=$(date +%H:%M)
-date=$(date +%d.%m)
+date=$(date +%a,%d.%m)
 clock="🕑"
 cal="📅"
 
