@@ -1,3 +1,0 @@
-#!/bin/sh
-sudo apt update > /dev/null
-apt list --upgradeable | sed '1,1d' | wc -l > /tmp/aptlist

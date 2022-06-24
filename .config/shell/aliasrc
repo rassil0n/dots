@@ -54,7 +54,7 @@ alias grm='git rm'
 # MISC
 alias cloneweb='wget -m -p -E -k'
 alias ip='ip -c'
-alias rss='newsboat'
+alias rss='newsboat && kill -46 $(pidof dwmblocks) &&clear'
 # alias texclean='rm *{log,toc}'
 
 alias ru='ps axch -o cmd:15,%mem --sort=-%mem | head'
