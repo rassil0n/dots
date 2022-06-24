@@ -146,6 +146,10 @@ audio-join(){
 	ffmpeg -i "concat:${(j:|:)@[2,-1]}" -acodec copy $1
 }
 
+mediaconvert(){
+	for i in *.$1; do ffmpeg -i "$i" "${i%.*}.$2"; done
+}
+
 vimwiki () {
     if [[ $# == 0 ]]
     then
