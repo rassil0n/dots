@@ -1,0 +1,1 @@
+#define length(array) (sizeof(array)/sizeof(*(array)))

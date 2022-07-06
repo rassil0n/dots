@@ -1,0 +1,4 @@
+\begin{mdframed}[frametitle={{+TITLE+}},linecolor=red,linewidth=2pt]
+	\textit{{{+DEFINITION+}}}
+\end{mdframed}
+{{--}}

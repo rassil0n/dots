@@ -1,0 +1,19 @@
+\documentclass[10pt,a4paper,xcolor=dvipsnames]{{{+class+}}}
+\usepackage[german]{babel}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+
+\usepackage{tabularx,ragged2e}
+\newcolumntype{C}{>{\Centering\arraybackslash}X} % centered "X" column
+
+\usepackage[left=3cm,top=2cm,bottom=2cm,right=3cm]{geometry}
+\usepackage[scaled]{helvet}
+\renewcommand\familydefault{\sfdefault}
+
+\author{{{+author+}}}
+\title{{{+title+}}}
+
+\begin{document}
+{{-DOCUMENT-}}
+\end{document}

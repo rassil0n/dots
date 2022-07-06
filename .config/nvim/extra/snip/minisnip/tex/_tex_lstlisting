@@ -1,0 +1,4 @@
+\begin{lstlisting}[name = {{++}}, caption=\lstname, language={{++}}]
+	{{+% LISTING+}}
+\end{lstlisting}
+{{--}}
