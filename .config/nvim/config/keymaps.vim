@@ -53,9 +53,9 @@
 	inoremap {<CR> {<CR>}<c-o><s-o>
 	inoremap (<CR> (<CR>)<c-o><s-o>
 	inoremap [<CR> [<CR>]<c-o><s-o>
-	inoremap        (  ()<Left>
-	inoremap        {  {}<Left>
-	inoremap        [  []<Left>
+	" inoremap        (  ()<Left>
+	" inoremap        {  {}<Left>
+	" inoremap        [  []<Left>
 "}}}
 "{{{ AUTO SKIP
 	inoremap <expr> ) strpart(getline('.'), col('.')-1, 1) == ")" ? "\<Right>" : ")"
@@ -73,6 +73,7 @@ cnoreabbr <expr> %% fnameescape(expand('%:p'))
 map <F10> :execute "Rg " . expand("<cword>") <CR>
 nmap <expr> <CR> &buftype ==# '' ? 'za' : "\<CR>"
 map <leader>f :execute "vimgrep /" . expand("<cword>") . "/j **" <Bar> cw<Cr>
+map gf :e <cfile><CR>
 
 " vmap <Tab> :!vilatac<Cr>a<C-j>
 " vmap <C-j> :!vilatac<Cr>a<C-j>

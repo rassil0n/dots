@@ -76,7 +76,8 @@ Plug 'justinmk/vim-sneak'			" quick movement in text, better f/t
 Plug 'embear/vim-foldsearch'			" for better search overviews
 "}}}
 "{{{ SYSTEM
-Plug 'chrisbra/SudoEdit.vim'			" write/read files with sudo
+Plug 'lambdalisue/suda.vim'
+	let g:suda_smart_edit = 1
 Plug 'tpope/vim-repeat'				" make the \"dot\" even more useful
 Plug 'michaeljsmith/vim-indent-object'		" for better movements
 Plug 'christoomey/vim-system-copy'		" invoke xsel
@@ -91,12 +92,9 @@ Plug 'ctrlpvim/ctrlp.vim'
 Plug 'dhruvasagar/vim-table-mode'		" easy formatting of markdown tables
 "}}}
 "{{{ FILETREE
-Plug 'lambdalisue/fern.vim'			" the filetree itself
-	map <F2> :Fern . -drawer -toggle<Cr>
-	map <F3> :Fern bookmark:///<Cr>
-Plug 'lambdalisue/fern-bookmark.vim'		" bookmarks in filetree
-Plug 'LumaKernel/fern-mapping-fzf.vim'		" fuzzy finding files in the filetree
-	let g:fern#scheme#bookmark#store#file = '~/.config/nvim/bookmarks.json'
+Plug 'dylanaraps/fff.vim'
+		let g:fff#split = "30vnew"
+		let g:fff#split_direction = "nosplitbelow nosplitright"
 "}}}
 "{{{ ORG-MODE
 Plug 'hughbien/org-vim'
@@ -197,9 +195,6 @@ Plug 'vim-scripts/utl.vim'			" opening links with vim (pdf,url,jpg)
 		" let g:vim_markdown_folding_level = 6
 		" let g:vim_markdown_edit_url_in = 'tab'
 " Plug 'pbrisbin/vim-mkdir'
-" Plug 'dylanaraps/fff.vim'
-		" let g:fff#split = \"30vnew\"
-		" let g:fff#split_direction = \"nosplitbelow nosplitright\"
 " Plug 'jkramer/vim-checkbox'
 " Plug 'mattn/calendar-vim'
 " Plug 'chrisbra/DistractFree'
@@ -207,6 +202,12 @@ Plug 'vim-scripts/utl.vim'			" opening links with vim (pdf,url,jpg)
 " Plug 'itchyny/calendar.vim'
 " Plug 'qpkorr/vim-renamer'
 
+" Plug 'lambdalisue/fern.vim'			" the filetree itself
+" 	map <F2> :Fern . -drawer -toggle<Cr>
+" 	map <F3> :Fern bookmark:///<Cr>
+" Plug 'lambdalisue/fern-bookmark.vim'		" bookmarks in filetree
+" Plug 'LumaKernel/fern-mapping-fzf.vim'		" fuzzy finding files in the filetree
+" 	let g:fern#scheme#bookmark#store#file = '~/.config/nvim/bookmarks.json'
 " Plug 'Shougo/neosnippet-snippets'
 " Plug 'Gavinok/vim-minisnip', { 'branch': 'optionalautoindent' }
 	" let g:minisnip_autoindent = 0
