@@ -3,8 +3,10 @@ $[ $LF_LEVEL -eq 1 ] || read -p "Warning: You're in a nested lf instance!" foo
 
 # BASIC VARS
 set drawbox
-set previewer ~/.config/lf/pv
-set cleaner ~/.config/lf/clear_img.sh
+set previewer ctpv
+set cleaner ctpvclear
+&ctpv -s $id
+&ctpvquit $id
 set scrolloff 10
 set icons
 
