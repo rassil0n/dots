@@ -3,6 +3,8 @@ $[ $LF_LEVEL -eq 1 ] || read -p "Warning: You're in a nested lf instance!" foo
 
 # BASIC VARS
 set drawbox
+# set previewer ~/.config/lf/draw_img.sh
+# set cleaner ~/.config/lf/clear_img.sh
 set previewer ctpv
 set cleaner ctpvclear
 &ctpv -s $id
@@ -14,7 +16,7 @@ set icons
 set shell zsh
 set shellopts '-e:--shwordsplit'
 set ifs "\n"
-
+map - $~/.config/lf/draw_img.sh "$f"
 # CMDS/FUNCTIONS
 # rewrite open-function to mount archives
 cmd open ${{
@@ -202,7 +204,7 @@ cmd cpdragon %cpdragon
 cmd mvdragon %mvdragon
 
 
-cmd info ${{ $HOME/.config/lf/pv $fx | less }}
+cmd info ${{ $HOME/.config/lf/info $fx | less }}
 
 # UNBIND KEYS
 map y; map d; map p; map d; map c; map g; map q; map r; map w
@@ -210,6 +212,10 @@ map y; map d; map p; map d; map c; map g; map q; map r; map w
 
 # map i info
 map gg top
+
+# filter
+map f filter
+map F push filter<c-u>
 
 # CHANGE DIR
 map <c-f> $lf -remote "send $id select '$(fzf)'"
@@ -268,6 +274,7 @@ map c2 $bzip2 $f
 
 # OPENING FILES
 map o $lf_opener -s $f
+# map o $fileopener $f
 map O &lf_opener -c $f
 map e $$EDITOR $f
 map E editExt
@@ -288,6 +295,7 @@ map zl ${{clear; git log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%C
 map q quit
 map ZZ quit
 map ZQ quit
+map <c-w> quit
 map <c-z> $ kill -STOP $PPID
 map <c-r> redraw
 map R reload
@@ -312,7 +320,7 @@ map <m-3> open
 # map s shell
 # map <enter> shell
 map S $$SHELL
-map <enter> cd-fuzzy
+map <enter> info
 map <backspace2> sel-fuzzy
 
 map yd yank-dirname
