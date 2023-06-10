@@ -1,0 +1,24 @@
+#!/usr/bin/env sh
+
+# download folder
+dl=$HOME/dl
+
+# create folders
+for dir in 00-images 00-videos 00-audio 00-archives 00-books ; do
+	[ -d $dl/$dir ] && continue || mkdir -p $dl/$dir
+done
+
+# sort files
+for i in $dl/*; do
+	case "$i" in
+		*tar|*zip|*xz|*rar|*deb|*jar) mv "$i" "$dl/00-archives/" ;;
+		*png|*jpg|*jpeg) mv "$i" "$dl/00-images/" ;;
+		*mp3|*m4a|*flac|*ogg|*acc) mv "$i" "$dl/00-audio/" ;;
+		*mp4|*webm|*mov|*mkv|*avi) mv "$i" "$dl/00-videos/" ;;
+		*pdf|*md|*odg) mv "$i" "$dl/00-documents/" ;;
+		*epub|*chm|*djvu) mv "$i" "$dl/00-books/" ;;
+	esac
+done
+
+# inform user
+printf "✔ $dl sorted\n"
