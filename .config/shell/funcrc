@@ -150,6 +150,11 @@ mediaconvert(){
 	for i in *.$1; do ffmpeg -i "$i" "${i%.*}.$2"; done
 }
 
+blkchmod(){
+	if [ $# -ne 3 ]; then echo "Usage blkchmod <dir> <f|d> <permissons>";
+		else find "${1}" -type "${2}" -exec chmod "${3}" {} +;fi
+}
+
 vimwiki () {
     if [[ $# == 0 ]]
     then
